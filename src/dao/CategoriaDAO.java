@@ -1,7 +1,7 @@
 package dao;
-//package com.reservas.dao;
+package com.reservas.dao;
 
-//import com.reservas.model.Categoria;
+import com.reservas.model.Categoria;
 import java.util.List;
 public interface CategoriaDAO {
     List<Categoria> listar();
