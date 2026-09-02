@@ -13,10 +13,10 @@ public class Recurso {
     }
 
     public String getId(){ return id;}
-    public String getCategoriaID(){ return categoriaID;}
+    public String getCategoriaId(){ return categoriaID;}
     public String getDescripcion(){ return descripcion;}
 
     public void setId(String id){ this.id=id;}
-    public void setCategoriaIDId(String categoriaID){ this.id=categoriaID;}
+    public void setCategoriaId(String categoriaID){ this.id=categoriaID;}
     public void setDescripcion(String descripcion){ this.descripcion=descripcion;}
 }
