@@ -1,110 +1,97 @@
 package dao;
-//package com.reservas.dao;
 
-//import com.reservas.database.GestorPersistenciaXML;
-//import com.reservas.model.Categoria;
+import modelo.Categoria;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import util.XMLManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class CategoriaDAOImpl implements CategoriaDAO {
-    private static final String ARCHIVO = "categorias.xml";
-    private static final String RAIZ = "categorias";
-    private static final String NODO = "categoria";
+
+    private static final String RUTA = "data/categorias.xml";
 
     @Override
-    public List<Categoria> listarTodos() throws PersistenciaException {
-        try {
-            List<Categoria> lista = new ArrayList<>();
-            Document doc = GestorPersistenciaXML.cargarDocumento(ARCHIVO, RAIZ);
-            NodeList nodos = doc.getElementsByTagName(NODO);
+    public List<Categoria> listar() {
+        List<Categoria> lista = new ArrayList<>();
+        Document doc = XMLManager.cargarODCrear(RUTA, "categorias");
+        NodeList nodos = doc.getElementsByTagName("categoria");
 
-            for (int i = 0; i < nodos.getLength(); i++) {
-                Element el = (Element) nodos.item(i);
-                lista.add(new Categoria(GestorPersistenciaXML.obtenerTexto(el, "id"), GestorPersistenciaXML.obtenerTexto(el, "descripcion")));
-            }
-            return lista;
-
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al leer " + ARCHIVO, e);
+        for (int i = 0; i < nodos.getLength(); i++) {
+            Element el = (Element) nodos.item(i);
+            lista.add(new Categoria(
+                    XMLManager.getTexto(el, "id"),
+                    XMLManager.getTexto(el, "descripcion")
+            ));
         }
+        return lista;
     }
+
     @Override
-    public Categoria buscarPorId(String id) throws PersistenciaException {
-        for (Categoria c : listarTodos()) {
+    public Categoria buscarPorId(String id) {
+        for (Categoria c : listar()) {
             if (c.getId().equalsIgnoreCase(id)) return c;
         }
         return null;
     }
 
     @Override
-    public void insertar(Categoria categoria) throws PersistenciaException {
-        categoria.setId(generarSiguienteId());
-        guardarNodo(categoria);
-    }
+    public void guardar(Categoria categoria) {
+        Document doc = XMLManager.cargarODCrear(RUTA, "categorias");
+        Element raiz = doc.getDocumentElement();
 
-    @Override
-    public void actualizar(Categoria categoria) throws PersistenciaException {
-        guardarNodo(categoria);
-    }
-
-    @Override
-    public void eliminar(String id) throws PersistenciaException {
-        try {
-            Document doc = GestorPersistenciaXML.cargarDocumento(ARCHIVO, RAIZ);
-            Element raiz = doc.getDocumentElement();
-            NodeList nodos = doc.getElementsByTagName(NODO);
-
+        // Si es nueva (sin id), se autogenera antes de guardar.
+        if (categoria.getId() == null || categoria.getId().trim().isEmpty()) {
+            categoria.setId(generarSiguienteId());
+        } else {
+            // Si ya existe, se remueve para reemplazarlo (upsert simple).
+            NodeList nodos = doc.getElementsByTagName("categoria");
             for (int i = 0; i < nodos.getLength(); i++) {
                 Element el = (Element) nodos.item(i);
-                if (GestorPersistenciaXML.obtenerTexto(el, "id").equalsIgnoreCase(id)) {
-                    raiz.removeChild(el);
-                    GestorPersistenciaXML.guardarDocumento(doc, ARCHIVO);
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al borrar de " + ARCHIVO, e);
-        }
-    }
-
-    private String generarSiguienteId() throws PersistenciaException {
-        int maximo = 0;
-        for (Categoria c : listarTodos()) {
-            try {
-                int numero = Integer.parseInt(c.getId().replace("CAT-", ""));
-                if (numero > maximo) maximo = numero;
-            } catch (NumberFormatException ignorado) {
-            }
-        }
-        return String.format("CAT-%06d", maximo + 1);
-    }
-
-    private void guardarNodo(Categoria c) throws PersistenciaException {
-        try {
-            Document doc = GestorPersistenciaXML.cargarDocumento(ARCHIVO, RAIZ);
-            Element raiz = doc.getDocumentElement();
-
-            NodeList nodos = doc.getElementsByTagName(NODO);
-            for (int i = 0; i < nodos.getLength(); i++) {
-                Element el = (Element) nodos.item(i);
-                if (GestorPersistenciaXML.obtenerTexto(el, "id").equalsIgnoreCase(c.getId())) {
+                if (XMLManager.getTexto(el, "id").equalsIgnoreCase(categoria.getId())) {
                     raiz.removeChild(el);
                     break;
                 }
             }
-
-            Element nuevo = doc.createElement(NODO);
-            GestorPersistenciaXML.crearHijoTexto(doc, nuevo, "id", c.getId());
-            GestorPersistenciaXML.crearHijoTexto(doc, nuevo, "descripcion", c.getDescripcion());
-            raiz.appendChild(nuevo);
-
-            GestorPersistenciaXML.guardarDocumento(doc, ARCHIVO);
-
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al guardar " + ARCHIVO, e);
         }
+
+        Element nuevo = doc.createElement("categoria");
+        XMLManager.crearHijoTexto(doc, nuevo, "id", categoria.getId());
+        XMLManager.crearHijoTexto(doc, nuevo, "descripcion", categoria.getDescripcion());
+        raiz.appendChild(nuevo);
+
+        XMLManager.guardar(doc, RUTA);
+    }
+
+    @Override
+    public void eliminar(String id) {
+        Document doc = XMLManager.cargarODCrear(RUTA, "categorias");
+        Element raiz = doc.getDocumentElement();
+        NodeList nodos = doc.getElementsByTagName("categoria");
+
+        for (int i = 0; i < nodos.getLength(); i++) {
+            Element el = (Element) nodos.item(i);
+            if (XMLManager.getTexto(el, "id").equalsIgnoreCase(id)) {
+                raiz.removeChild(el);
+                XMLManager.guardar(doc, RUTA);
+                return;
+            }
+        }
+    }
+
+    /** Genera el siguiente id secuencial: CAT-000001, CAT-000002, ... */
+    private String generarSiguienteId() {
+        int maximo = 0;
+        for (Categoria c : listar()) {
+            try {
+                int numero = Integer.parseInt(c.getId().replace("CAT-", ""));
+                if (numero > maximo) maximo = numero;
+            } catch (NumberFormatException ignorado) {
+                // Id con otro formato (cargado a mano); se ignora para el conteo.
+            }
+        }
+        return String.format("CAT-%06d", maximo + 1);
     }
 }

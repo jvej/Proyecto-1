@@ -24,8 +24,11 @@ public class MainFrame extends JFrame {
         bienvenida.add(new JLabel("Bienvenido, " + idUsuario + ". Login funcionando correctamente."));
         tabs.addTab("Inicio", bienvenida);
 
-        // TODO (Coso): tabs.addTab("Funcionarios", new FuncionarioPanel());   -- solo si esAdmin
-        // TODO (Coso): tabs.addTab("Categorias", new CategoriaPanel());      -- solo si esAdmin
+        if (esAdmin) {
+            tabs.addTab("Funcionarios", new FuncionarioPanel());
+            tabs.addTab("Categorias", new CategoriaPanel());
+        }
+
         // TODO (Coso): tabs.addTab("Calendarizacion", new CalendarizacionPanel());
         // TODO (Axel): tabs.addTab("Recursos", new RecursoPanel());          -- solo si esAdmin
         // TODO (Axel): tabs.addTab("Reservas", new ReservaPanel());          -- solo si !esAdmin
