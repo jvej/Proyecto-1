@@ -1,5 +1,7 @@
 package modelo;
 //why Jeferson?
+
+//Listo axel
 public class Recurso {
     private String id;
     private String categoriaID;
