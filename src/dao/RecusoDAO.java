@@ -8,7 +8,7 @@ import util.XMLManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecusosDAO {
+public class RecusoDAO {
     private static final String RUTA = "data/recursos.xml";
 
     public List<Recurso> listar(){
