@@ -20,7 +20,7 @@ public class RecursoDAO {
             Element el = (Element)nodos.item(i);
             Recurso r = new Recurso(
               XMLManager.getTexto(el, "id"),
-              XMLManager.getTexto(el, "categoriaId"),
+              XMLManager.getTexto(el, "idCategoria"),
               XMLManager.getTexto(el, "descripcion") );
             lista.add(r);
         }
@@ -62,7 +62,7 @@ public class RecursoDAO {
         }
         Element nuevo = doc.createElement("recurso");
         XMLManager.crearHijoTexto(doc, nuevo, "id", recurso.getId());
-        XMLManager.crearHijoTexto(doc, nuevo, "categoriaId", recurso.getCategoriaId());
+        XMLManager.crearHijoTexto(doc, nuevo, "idCategoria", recurso.getCategoriaId());
         XMLManager.crearHijoTexto(doc, nuevo, "descripcion", recurso.getDescripcion());
         raiz.appendChild(nuevo);
 
