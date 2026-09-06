@@ -19,6 +19,6 @@ public class Recurso {
     public String getDescripcion(){ return descripcion;}
 
     public void setId(String id){ this.id=id;}
-    public void setCategoriaId(String categoriaID){ this.id=categoriaID;}
+    public void setCategoriaId(String categoriaID){ this.categoriaID=categoriaID;}
     public void setDescripcion(String descripcion){ this.descripcion=descripcion;}
 }
