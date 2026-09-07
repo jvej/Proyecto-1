@@ -1,4 +1,5 @@
 package modelo;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -16,19 +17,18 @@ public class Reserva {
     private String estado;
 
     public Reserva() {
-        this.categoriasIds = new ArrayList<>();
-        this.recursosIds = new ArrayList<>();
+        this.categoriasIds =new ArrayList<>();
+        this.recursosIds =new ArrayList<>();
     }
-
-    public Reserva(String id, String funcionarioId, String actividad,
-                   LocalDate fecha, LocalTime horaInicio, LocalTime horaFin,
-                   List<String> categoriasIds, List<String> recursosIds, String estado) {
-        this.id = id;
-        this.funcionarioId = funcionarioId;
-        this.actividad = actividad;
-        this.fecha = fecha;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+    public Reserva(String id, String funcionarioId, String actividad, LocalDate fecha,
+                   LocalTime horaInicio, LocalTime horaFin, List<String> categoriasIds,
+                   List<String> recursosIds, String estado) {
+        this.id =id;
+        this.funcionarioId =funcionarioId;
+        this.actividad =actividad;
+        this.fecha =fecha;
+        this.horaInicio =horaInicio;
+        this.horaFin =horaFin;
         this.categoriasIds = categoriasIds;
         this.recursosIds = recursosIds;
         this.estado = estado;
@@ -44,13 +44,13 @@ public class Reserva {
     public List<String> getRecursosIds() { return recursosIds; }
     public String getEstado() { return estado; }
 
-    public void setId(String id) { this.id = id; }
-    public void setFuncionarioId(String funcionarioId) { this.funcionarioId = funcionarioId; }
-    public void setActividad(String actividad) { this.actividad = actividad; }
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
-    public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
-    public void setHoraFin(LocalTime horaFin) { this.horaFin = horaFin; }
-    public void setCategoriasIds(List<String> categoriasIds) { this.categoriasIds = categoriasIds; }
-    public void setRecursosIds(List<String> recursosIds) { this.recursosIds = recursosIds; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public void setId(String id) { this.id =id; }
+    public void setFuncionarioId(String funcionarioId) { this.funcionarioId =funcionarioId; }
+    public void setActividad(String actividad) { this.actividad =actividad; }
+    public void setFecha(LocalDate fecha) { this.fecha =fecha; }
+    public void setHoraInicio(LocalTime horaInicio) { this.horaInicio =horaInicio; }
+    public void setHoraFin(LocalTime horaFin) { this.horaFin =horaFin; }
+    public void setCategoriasIds(List<String> categoriasIds) { this.categoriasIds =categoriasIds; }
+    public void setRecursosIds(List<String> recursosIds) { this.recursosIds =recursosIds; }
+    public void setEstado(String estado) { this.estado =estado; }
 }
