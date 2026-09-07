@@ -13,7 +13,7 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         setTitle("Sistema de Reservas - Iniciar Sesión");
-        setSize(380, 260);
+        setSize(380, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
