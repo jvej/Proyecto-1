@@ -10,8 +10,8 @@ import dao.ReservaLecturaDAO.ReservaInfo;
 import dao.RecursoLecturaDAO;
 import dao.RecursoLecturaDAOImpl;
 import dao.ReservaLecturaDAO;
-import dao.ReservaLecturaDAOImpl;
 
+import modelo.Categoria;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;

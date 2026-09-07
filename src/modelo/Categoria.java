@@ -1,5 +1,4 @@
 package modelo;
-package com.reservas.model;
 
 public class Categoria {
     private String id;

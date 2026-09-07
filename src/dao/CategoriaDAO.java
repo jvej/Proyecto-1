@@ -1,8 +1,7 @@
 package dao;
-package com.reservas.dao;
-
-import com.reservas.model.Categoria;
+import modelo.Categoria;
 import java.util.List;
+
 public interface CategoriaDAO {
     List<Categoria> listar();
     Categoria buscarPorId(String id);
