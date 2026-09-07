@@ -1,3 +1,5 @@
+package App;
+
 import vista.LoginFrame;
 
 import javax.swing.*;
