@@ -33,8 +33,8 @@ public class MainFrame extends JFrame {
 
         // TODO (Axel): tabs.addTab("Recursos", new RecursoPanel());          -- solo si esAdmin
         // TODO (Axel): tabs.addTab("Reservas", new ReservaPanel());          -- solo si !esAdmin
-        // TODO (Mariano): tabs.addTab("Actividades", new ActividadPanel());
-        // TODO (Mariano): tabs.addTab("Estadisticas", new EstadisticaPanel());
+        tabs.addTab("Actividades", new ActividadPanel());
+        tabs.addTab("Estadisticas", new EstadisticaPanel());
 
         add(tabs);
     }
