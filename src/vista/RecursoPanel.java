@@ -1,20 +1,23 @@
 package vista;
 import controlador.RecursoControlador;
-import modelo.Recurso;
+import dao.CategoriaDAOImpl;
+import modelo.Categoria;
 
+import modelo.Recurso;
+import util.PDFReportUtil;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class RecursoPanel extends JPanel {
     private final RecursoControlador controlador = new RecursoControlador();
 
-    // mientras Jeferson sube algo como dao.CategoriaDAO real. se usara esto para evitar errores
-    // Cuando exista, se reemplaza por algo como: new CategoriaDAO().listar().
-    private final Map<String, String> categoriasTemp = new LinkedHashMap<>();
+
+    private final List<Categoria> categorias = new CategoriaDAOImpl().listar();
 
     private JComboBox<String> cmbFiltroCategoria;
     private JTextField txtFiltroDescripcion;
@@ -27,9 +30,6 @@ public class RecursoPanel extends JPanel {
     private DefaultTableModel modeloTabla;
 
     public RecursoPanel() {
-        categoriasTemp.put("CAT-000001", "Sala para 10 personas");
-        categoriasTemp.put("CAT-000002", "Laptop windows 11");
-        categoriasTemp.put("CAT-000003", "Sala de Juntas");
 
         setLayout(null);
 
@@ -39,8 +39,8 @@ public class RecursoPanel extends JPanel {
 
         cmbFiltroCategoria = new JComboBox<>();
         cmbFiltroCategoria.addItem(""); // "" = sin filtro, muestra todas
-        for (String descripcion : categoriasTemp.values()) {
-            cmbFiltroCategoria.addItem(descripcion);
+        for (Categoria c : categorias) {
+            cmbFiltroCategoria.addItem(c.getDescripcion());
         }
         cmbFiltroCategoria.setBounds(100, 15, 180, 25);
         add(cmbFiltroCategoria);
@@ -74,8 +74,8 @@ public class RecursoPanel extends JPanel {
         add(lblCategoria);
 
         cmbCategoria = new JComboBox<>();
-        for (String descripcion : categoriasTemp.values()) {
-            cmbCategoria.addItem(descripcion);
+        for (Categoria c : categorias) {
+            cmbCategoria.addItem(c.getDescripcion());
         }
         cmbCategoria.setBounds(140, 95, 180, 25);
         add(cmbCategoria);
@@ -172,14 +172,28 @@ public class RecursoPanel extends JPanel {
     }
 
     private void imprimir() {
-        // aqui tiene que ir la llamada final de la seccion de exportar como PDF
-        JOptionPane.showMessageDialog(this, "Reporte PDF pendiente de integrar con PDFReportUtil.");
+        String[] columnas = {"Id", "Categoría", "Descripción"};
+        List<String[]> filas = new ArrayList<>();
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+            filas.add(new String[]{
+                    (String) modeloTabla.getValueAt(i, 0),
+                    (String) modeloTabla.getValueAt(i, 1),
+                    (String) modeloTabla.getValueAt(i, 2)
+            });
+        }
+        PDFReportUtil.generarReporteTabla(this, "Listado de Recursos", columnas, filas);
     }
 
     private void cargarTabla(List<Recurso> recursos) {
         modeloTabla.setRowCount(0);
         for (Recurso r : recursos) {
-            String descCategoria = categoriasTemp.getOrDefault(r.getCategoriaId(), r.getCategoriaId());
+            String descCategoria = r.getCategoriaId();
+            for (Categoria c : categorias) {
+                if (c.getId().equalsIgnoreCase(r.getCategoriaId())) {
+                    descCategoria = c.getDescripcion();
+                    break;
+                }
+            }
             modeloTabla.addRow(new Object[]{r.getId(), descCategoria, r.getDescripcion()});
         }
     }
@@ -192,8 +206,8 @@ public class RecursoPanel extends JPanel {
 
     private String idPorDescripcion(String descripcion) {
         if (descripcion == null || descripcion.isEmpty()) return null;
-        for (Map.Entry<String, String> entry : categoriasTemp.entrySet()) {
-            if (entry.getValue().equals(descripcion)) return entry.getKey();
+        for (Categoria c : categorias) {
+            if (c.getDescripcion().equals(descripcion)) return c.getId();
         }
         return null;
     }

@@ -6,6 +6,9 @@ import modelo.Categoria;
 import modelo.Reserva;
 import util.Sesion;
 
+import util.PDFReportUtil;
+import util.DatosExtraidos;
+import util.IAExtractorService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -194,11 +197,42 @@ public class ReservaPanel extends JPanel{
     }
 
     private void imprimir() {
-        JOptionPane.showMessageDialog(this, "Reporte PDF pendiente de integrar con PDFReportUtil.");
+        String[] columnas = {"Id", "Actividad", "Fecha", "Horario", "Recursos", "Estado"};
+        List<String[]> filas = new ArrayList<>();
+        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+            String[] fila = new String[columnas.length];
+            for (int c = 0; c < columnas.length; c++) {
+                fila[c] = String.valueOf(modeloTabla.getValueAt(i, c));
+            }
+            filas.add(fila);
+        }
+        PDFReportUtil.generarReporteTabla(this, "Mis Reservas", columnas, filas);
     }
 
     private void extraerConIA() {
-        JOptionPane.showMessageDialog(this, "Extracción con IA pendiente de conectar.");
+        String frase = txtFrase.getText().trim();
+        if (frase.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escriba una frase describiendo la reserva.");
+            return;
+        }
+        try {
+            List<String> descripcionesCategorias = new ArrayList<>();
+            for (Categoria c : categorias) descripcionesCategorias.add(c.getDescripcion());
+
+            DatosExtraidos datos = new IAExtractorService().extraer(frase, descripcionesCategorias);
+
+            txtActividad.setText(datos.getActividad());
+            txtFecha.setText(datos.getFecha());
+            txtHoraInicio.setText(datos.getHoraInicio());
+            txtHoraFin.setText(datos.getHoraFin());
+
+            for (JCheckBox chk : checksCategorias) {
+                chk.setSelected(datos.getCategoriasDescripciones().contains(chk.getText()));
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo extraer con IA: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     //Helpers
