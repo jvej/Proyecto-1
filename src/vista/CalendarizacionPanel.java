@@ -1,7 +1,7 @@
 package vista;
 
 import controlador.CalendarizacionControlador;
-import controlador.CalendarizacionControlador.Celda;
+import util.CalendarizacionService.Celda;
 import util.CalendarizacionService.RecursoInfo;
 import modelo.Categoria;
 import util.PDFReportUtil;

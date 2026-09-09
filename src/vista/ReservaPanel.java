@@ -4,6 +4,7 @@ import modelo.Categoria;
 import modelo.Reserva;
 import util.*;
 
+import util.ReservaService.ResultadoReserva;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
@@ -144,7 +145,7 @@ public class ReservaPanel extends JPanel{
             LocalTime horaFin = parsearHora(txtHoraFin.getText());
             List<String> categoriasSeleccionadas = obtenerCategoriasMarcadas();
 
-            ResultadoReserva resultado = controlador.crearReserva(
+            ReservaService.ResultadoReserva resultado = controlador.crearReserva(
                     funcionarioId, actividad, fecha, horaInicio, horaFin, categoriasSeleccionadas);
 
             if (resultado.isExito()) {

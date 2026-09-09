@@ -68,28 +68,37 @@ public class CambiarClavePanel extends JDialog {
         panel.add(btnCancelar);
 
         btnAceptar.addActionListener(e -> {
+
             try {
+
                 String id = txtId.getText().trim();
+
                 String actual = new String(txtActual.getPassword()).trim();
+
                 String nueva1 = new String(txtNueva1.getPassword()).trim();
+
                 String nueva2 = new String(txtNueva2.getPassword()).trim();
 
-                if (id.isEmpty() || actual.isEmpty() || nueva1.isEmpty()) {
+                // Validar campos vacíos
+                if (id.isEmpty() || actual.isEmpty() || nueva1.isEmpty() || nueva2.isEmpty()) {
+
                     throw new Exception("Complete todos los campos.");
                 }
+
+                // Validar que las claves nuevas coincidan
                 if (!nueva1.equals(nueva2)) {
                     throw new Exception("Las claves nuevas no coinciden.");
                 }
 
-                boolean ok = controlador.cambiarClave(id, actual, nueva1);
-                if (!ok) {
-                    throw new Exception("ID o clave actual incorrectos.");
-                }
+                controlador.cambiarClave(id, actual, nueva1);
 
+                // Si llegamos aquí, todo salió bien.
                 JOptionPane.showMessageDialog(this, "Clave actualizada correctamente.");
+
                 dispose();
 
             } catch (Exception ex) {
+
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });

@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.LinkedHashMap;
 
 public class RecursoPanel extends JPanel {
     private final RecursoControlador controlador = new RecursoControlador();
