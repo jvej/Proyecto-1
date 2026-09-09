@@ -1,22 +1,17 @@
 package controlador;
-import dao.UsuarioDAO;
+
 import modelo.Usuario;
-import util.Sesion;
+import modelo.ValidacionException;
+import util.UsuarioService;
 
 public class LoginControlador {
+    private final UsuarioService usuarioService = new UsuarioService();
 
-    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-    public Usuario login(String id, String clave) {
-        Usuario u = usuarioDAO.buscarPorId(id);
-        if (u != null && u.getClave().equals(clave)) {
-            Sesion.getInstancia().setUsuarioActual(u);
-            return u;
-        }
-        return null;
+    public Usuario login(String id, String clave) throws ValidacionException {
+        return usuarioService.autenticar(id, clave);
     }
 
-    public boolean cambiarClave(String id, String claveActual, String claveNueva) {
-        return usuarioDAO.cambiarClave(id, claveActual, claveNueva);
+    public void cambiarClave(String id, String claveActual, String claveNueva) throws ValidacionException {
+        usuarioService.cambiarClave(id, claveActual, claveNueva);
     }
 }

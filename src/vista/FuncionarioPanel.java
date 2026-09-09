@@ -3,7 +3,7 @@ package vista;
 import controlador.FuncionarioControlador;
 import modelo.Funcionario;
 import util.PDFReportUtil;
-
+import util.CategoriaService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

@@ -1,17 +1,11 @@
 package vista;
 import controlador.ReservaControlador;
-import controlador.ResultadoReserva;
-import dao.CategoriaDAOImpl;
 import modelo.Categoria;
 import modelo.Reserva;
-import util.Sesion;
+import util.*;
 
-import util.PDFReportUtil;
-import util.DatosExtraidos;
-import util.IAExtractorService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -20,7 +14,7 @@ import java.util.List;
 
 public class ReservaPanel extends JPanel{
     private final ReservaControlador controlador = new ReservaControlador();
-    private final List<Categoria> categorias = new CategoriaDAOImpl().listar();
+    private final List<Categoria> categorias = new CategoriaService().listar();
     private final List<JCheckBox> checksCategorias = new ArrayList<>();
 
     private JTextField txtFrase;

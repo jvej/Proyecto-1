@@ -1,6 +1,6 @@
 package vista;
 import controlador.RecursoControlador;
-import dao.CategoriaDAOImpl;
+import util.CategoriaService;
 import modelo.Categoria;
 
 import modelo.Recurso;
@@ -17,7 +17,7 @@ public class RecursoPanel extends JPanel {
     private final RecursoControlador controlador = new RecursoControlador();
 
 
-    private final List<Categoria> categorias = new CategoriaDAOImpl().listar();
+    private final List<Categoria> categorias = new CategoriaService().listar();
 
     private JComboBox<String> cmbFiltroCategoria;
     private JTextField txtFiltroDescripcion;
