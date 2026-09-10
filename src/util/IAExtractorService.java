@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class IAExtractorService {
 
-    private static final String MODELO = "gemini-2.0-flash";
+    private static final String MODELO = "gemini-3.6-flash";
     private static final String URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/";
 
     public DatosExtraidos extraer(String frase, List<String> categoriasDisponibles) throws Exception {
