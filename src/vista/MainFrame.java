@@ -19,10 +19,6 @@ public class MainFrame extends JFrame {
 
         tabs = new JTabbedPane();
 
-        // Tab temporal para probar el login; se reemplaza cuando existan los paneles reales.
-        JPanel bienvenida = new JPanel();
-        bienvenida.add(new JLabel("Bienvenido, " + idUsuario + ". Login funcionando correctamente."));
-        tabs.addTab("Inicio", bienvenida);
 
         if (esAdmin) {
             tabs.addTab("Funcionarios", new FuncionarioPanel());
