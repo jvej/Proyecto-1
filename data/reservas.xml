@@ -77,4 +77,21 @@
             <recursoId>S1-001</recursoId>
         </recursosIds>
     </reserva>
+    <reserva>
+        <id>RES-000006</id>
+        <funcionarioId>111</funcionarioId>
+        <actividad>Reunion</actividad>
+        <fecha>2026-09-15</fecha>
+        <horaInicio>14:00</horaInicio>
+        <horaFin>16:00</horaFin>
+        <estado>ACTIVA</estado>
+        <categoriasIds>
+            <categoriaId>CAT-000001</categoriaId>
+            <categoriaId>CAT-000003</categoriaId>
+        </categoriasIds>
+        <recursosIds>
+            <recursoId>S1-001</recursoId>
+            <recursoId>45238</recursoId>
+        </recursosIds>
+    </reserva>
 </reservas>

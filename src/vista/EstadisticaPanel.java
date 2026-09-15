@@ -56,14 +56,14 @@ public class EstadisticaPanel extends JPanel {
         JTable tabla = new JTable(modeloRecursos);
         tabla.setEnabled(false);
 
-        graficoRecursos = new BarChartPanel("Recursos Usados");
+        graficoRecursos = new BarChartPanel("Recursos Usados", true);
 
-        JPanel centro = new JPanel(new GridLayout(2, 1, 0, 10));
-        centro.add(new JScrollPane(tabla));
-        centro.add(graficoRecursos);
+        JScrollPane scrollTabla = new JScrollPane(tabla);
+        scrollTabla.setPreferredSize(new Dimension(0, 120));
 
         columna.add(filtros, BorderLayout.NORTH);
-        columna.add(centro, BorderLayout.CENTER);
+        columna.add(graficoRecursos, BorderLayout.CENTER);
+        columna.add(scrollTabla, BorderLayout.SOUTH);
 
         btnCargar.addActionListener(e -> cargarRecursos());
         btnImprimir.addActionListener(e -> imprimirTabla(modeloRecursos, "Estadisticas de Recursos por Categoria"));
@@ -112,12 +112,12 @@ public class EstadisticaPanel extends JPanel {
 
         graficoActividades = new BarChartPanel("Actividades Realizadas");
 
-        JPanel centro = new JPanel(new GridLayout(2, 1, 0, 10));
-        centro.add(new JScrollPane(tabla));
-        centro.add(graficoActividades);
+        JScrollPane scrollTabla = new JScrollPane(tabla);
+        scrollTabla.setPreferredSize(new Dimension(0, 120));
 
         columna.add(filtros, BorderLayout.NORTH);
-        columna.add(centro, BorderLayout.CENTER);
+        columna.add(graficoActividades, BorderLayout.CENTER);
+        columna.add(scrollTabla, BorderLayout.SOUTH);
 
         btnCargar.addActionListener(e -> cargarActividades());
         btnImprimir.addActionListener(e -> imprimirTabla(modeloActividades, "Estadisticas de Actividades por Semana"));

@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
         boolean esAdmin = Sesion.getInstancia().isAdministrador();
 
         setTitle("Sistema de Reservas - " + idUsuario + (esAdmin ? " (ADMIN)" : ""));
-        setSize(850, 550);
+        setSize(1100, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
