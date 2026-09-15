@@ -1,2 +1,103 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<recursos/>
+<recursos>
+    <recurso>
+        <id>S1-001</id>
+        <idCategoria>CAT-000001</idCategoria>
+        <descripcion>Sala 1, primer piso</descripcion>
+    </recurso>
+    <recurso>
+        <id>S1-002</id>
+        <idCategoria>CAT-000001</idCategoria>
+        <descripcion>Sala 1, segundo piso</descripcion>
+    </recurso>
+    <recurso>
+        <id>S1-003</id>
+        <idCategoria>CAT-000001</idCategoria>
+        <descripcion>Sala 1, tercer piso</descripcion>
+    </recurso>
+    <recurso>
+        <id>S1-004</id>
+        <idCategoria>CAT-000001</idCategoria>
+        <descripcion>Sala 1, edificio anexo</descripcion>
+    </recurso>
+    <recurso>
+        <id>S2-002</id>
+        <idCategoria>CAT-000004</idCategoria>
+        <descripcion>Sala 2, Edificio B</descripcion>
+    </recurso>
+    <recurso>
+        <id>S2-003</id>
+        <idCategoria>CAT-000004</idCategoria>
+        <descripcion>Sala 2, biblioteca</descripcion>
+    </recurso>
+    <recurso>
+        <id>S2-004</id>
+        <idCategoria>CAT-000004</idCategoria>
+        <descripcion>Sala 2, auditorio</descripcion>
+    </recurso>
+    <recurso>
+        <id>S2-001</id>
+        <idCategoria>CAT-000001</idCategoria>
+        <descripcion>Sala 2, Edificio A</descripcion>
+    </recurso>
+    <recurso>
+        <id>238715</id>
+        <idCategoria>CAT-000002</idCategoria>
+        <descripcion>Laptop  #238715</descripcion>
+    </recurso>
+    <recurso>
+        <id>238716</id>
+        <idCategoria>CAT-000002</idCategoria>
+        <descripcion>Laptop  #238716</descripcion>
+    </recurso>
+    <recurso>
+        <id>238717</id>
+        <idCategoria>CAT-000002</idCategoria>
+        <descripcion>Laptop  #238717</descripcion>
+    </recurso>
+    <recurso>
+        <id>238718</id>
+        <idCategoria>CAT-000002</idCategoria>
+        <descripcion>Laptop  #238718</descripcion>
+    </recurso>
+    <recurso>
+        <id>45238</id>
+        <idCategoria>CAT-000003</idCategoria>
+        <descripcion>Laptop Linux #45238</descripcion>
+    </recurso>
+    <recurso>
+        <id>45239</id>
+        <idCategoria>CAT-000003</idCategoria>
+        <descripcion>Laptop Linux #45239</descripcion>
+    </recurso>
+    <recurso>
+        <id>45240</id>
+        <idCategoria>CAT-000003</idCategoria>
+        <descripcion>Laptop Linux #45240</descripcion>
+    </recurso>
+    <recurso>
+        <id>45241</id>
+        <idCategoria>CAT-000003</idCategoria>
+        <descripcion>Laptop Linux #45241</descripcion>
+    </recurso>
+    <recurso>
+        <id>PRY-001</id>
+        <idCategoria>CAT-000005</idCategoria>
+        <descripcion>Proyector sala de juntas</descripcion>
+    </recurso>
+    <recurso>
+        <id>PRY-002</id>
+        <idCategoria>CAT-000005</idCategoria>
+        <descripcion>Proyector auditorio</descripcion>
+    </recurso>
+    <recurso>
+        <id>PRY-003</id>
+        <idCategoria>CAT-000005</idCategoria>
+        <descripcion>Proyector móvil 1</descripcion>
+    </recurso>
+    <recurso>
+        <id>PRY-004</id>
+        <idCategoria>CAT-000005</idCategoria>
+        <descripcion>Proyector móvil 2</descripcion>
+    </recurso>
+</recursos>
