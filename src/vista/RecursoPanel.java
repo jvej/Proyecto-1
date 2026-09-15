@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class RecursoPanel extends JPanel {
     private final RecursoControlador controlador = new RecursoControlador();
 
-
-    private final List<Categoria> categorias = new CategoriaService().listar();
+    // Ya NO es "final": se recarga cada vez que hace falta, para no quedar
+    // desactualizada si se crea una categoría nueva durante la misma sesión.
+    private List<Categoria> categorias = new ArrayList<>();
 
     private JComboBox<String> cmbFiltroCategoria;
     private JTextField txtFiltroDescripcion;
@@ -37,10 +37,6 @@ public class RecursoPanel extends JPanel {
         add(lblFiltroCategoria);
 
         cmbFiltroCategoria = new JComboBox<>();
-        cmbFiltroCategoria.addItem(""); // "" = sin filtro, muestra todas
-        for (Categoria c : categorias) {
-            cmbFiltroCategoria.addItem(c.getDescripcion());
-        }
         cmbFiltroCategoria.setBounds(100, 15, 180, 25);
         add(cmbFiltroCategoria);
 
@@ -57,8 +53,13 @@ public class RecursoPanel extends JPanel {
         add(btnBuscar);
 
         JButton btnImprimir = new JButton("Imprimir");
-        btnImprimir.setBounds(645, 15, 100, 25);
+        btnImprimir.setBounds(645, 15, 90, 25);
         add(btnImprimir);
+
+        JButton btnRecargarCategorias = new JButton("🔄");
+        btnRecargarCategorias.setToolTipText("Recargar lista de categorías");
+        btnRecargarCategorias.setBounds(745, 15, 40, 25);
+        add(btnRecargarCategorias);
 
         JLabel lblId = new JLabel("ID:");
         lblId.setBounds(20, 60, 100, 25);
@@ -73,9 +74,6 @@ public class RecursoPanel extends JPanel {
         add(lblCategoria);
 
         cmbCategoria = new JComboBox<>();
-        for (Categoria c : categorias) {
-            cmbCategoria.addItem(c.getDescripcion());
-        }
         cmbCategoria.setBounds(140, 95, 180, 25);
         add(cmbCategoria);
 
@@ -121,6 +119,7 @@ public class RecursoPanel extends JPanel {
         btnGuardar.addActionListener(e -> guardar());
         btnBorrar.addActionListener(e -> borrar());
         btnLimpiar.addActionListener(e -> limpiar());
+        btnRecargarCategorias.addActionListener(e -> recargarCategorias());
 
         tabla.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && tabla.getSelectedRow() != -1) {
@@ -128,10 +127,31 @@ public class RecursoPanel extends JPanel {
             }
         });
 
+        recargarCategorias();
         cargarTabla(controlador.listar());
     }
 
+    /** Vuelve a leer categorias.xml y repuebla ambos combos, sin perder la selección actual si sigue existiendo. */
+    private void recargarCategorias() {
+        String filtroPrevio = (String) cmbFiltroCategoria.getSelectedItem();
+        String categoriaPrevia = (String) cmbCategoria.getSelectedItem();
+
+        categorias = new CategoriaService().listar();
+
+        cmbFiltroCategoria.removeAllItems();
+        cmbFiltroCategoria.addItem(""); // "" = sin filtro, muestra todas
+        cmbCategoria.removeAllItems();
+        for (Categoria c : categorias) {
+            cmbFiltroCategoria.addItem(c.getDescripcion());
+            cmbCategoria.addItem(c.getDescripcion());
+        }
+
+        if (filtroPrevio != null) cmbFiltroCategoria.setSelectedItem(filtroPrevio);
+        if (categoriaPrevia != null) cmbCategoria.setSelectedItem(categoriaPrevia);
+    }
+
     private void buscar() {
+        recargarCategorias();
         String descripcionCategoria = (String) cmbFiltroCategoria.getSelectedItem();
         String categoriaId = idPorDescripcion(descripcionCategoria);
         String descripcion = txtFiltroDescripcion.getText().trim();

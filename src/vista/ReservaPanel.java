@@ -7,15 +7,18 @@ import util.*;
 import util.ReservaService.ResultadoReserva;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaPanel extends JPanel{
+public class ReservaPanel extends JPanel {
     private final ReservaControlador controlador = new ReservaControlador();
-    private final List<Categoria> categorias = new CategoriaService().listar();
+
+    // Ya NO es "final": se recarga cada vez que hace falta.
+    private List<Categoria> categorias = new ArrayList<>();
     private final List<JCheckBox> checksCategorias = new ArrayList<>();
 
     private JTextField txtFrase;
@@ -23,6 +26,10 @@ public class ReservaPanel extends JPanel{
     private JTextField txtFecha;
     private JTextField txtHoraInicio;
     private JTextField txtHoraFin;
+
+    // Contenedor de checkboxes: tamaño FIJO con scroll, para que agregar o
+    // quitar categorías nunca mueva los botones/tabla que están debajo.
+    private JPanel panelCategorias;
 
     private JTable tabla;
     private DefaultTableModel modeloTabla;
@@ -76,41 +83,41 @@ public class ReservaPanel extends JPanel{
         txtHoraFin.setBounds(670, 90, 80, 25);
         add(txtHoraFin);
 
-        //Categorías (checkboxes, uno por categoría real)
+        //Categorías (checkboxes, uno por categoría real) — zona FIJA con scroll
         JLabel lblCategorias = new JLabel("Categorías requeridas:");
         lblCategorias.setBounds(20, 125, 200, 20);
         add(lblCategorias);
 
-        int y = 150;
-        for (Categoria c : categorias) {
-            JCheckBox chk = new JCheckBox(c.getDescripcion());
-            chk.putClientProperty("categoriaId", c.getId());
-            chk.setBounds(20, y, 300, 22);
-            add(chk);
-            checksCategorias.add(chk);
-            y += 24;
-        }
+        JButton btnRecargarCategorias = new JButton("🔄 Recargar categorías");
+        btnRecargarCategorias.setBounds(560, 122, 160, 22);
+        add(btnRecargarCategorias);
 
-        //Botones
+        panelCategorias = new JPanel();
+        panelCategorias.setLayout(new BoxLayout(panelCategorias, BoxLayout.Y_AXIS));
+        JScrollPane scrollCategorias = new JScrollPane(panelCategorias);
+        scrollCategorias.setBounds(20, 148, 750, 90);
+        add(scrollCategorias);
+
+        //Botones (posiciones FIJAS: ya no dependen de cuántas categorías haya)
         JButton btnReservar = new JButton("Reservar");
-        btnReservar.setBounds(20, y + 10, 110, 28);
+        btnReservar.setBounds(20, 248, 110, 28);
         add(btnReservar);
 
         JButton btnCancelar = new JButton("Cancelar reserva seleccionada");
-        btnCancelar.setBounds(140, y + 10, 220, 28);
+        btnCancelar.setBounds(140, 248, 220, 28);
         add(btnCancelar);
 
         JButton btnLimpiar = new JButton("Limpiar");
-        btnLimpiar.setBounds(370, y + 10, 100, 28);
+        btnLimpiar.setBounds(370, 248, 100, 28);
         add(btnLimpiar);
 
         JButton btnImprimir = new JButton("Imprimir");
-        btnImprimir.setBounds(480, y + 10, 100, 28);
+        btnImprimir.setBounds(480, 248, 100, 28);
         add(btnImprimir);
 
         //Tabla "Mis reservas"
         JLabel lblListado = new JLabel("Mis reservas:");
-        lblListado.setBounds(20, y + 45, 150, 20);
+        lblListado.setBounds(20, 286, 150, 20);
         add(lblListado);
 
         modeloTabla = new DefaultTableModel(
@@ -121,17 +128,41 @@ public class ReservaPanel extends JPanel{
         tabla = new JTable(modeloTabla);
 
         JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBounds(20, y + 70, 750, 200);
+        scroll.setBounds(20, 310, 750, 180);
         add(scroll);
 
         //Eventos
-        btnReservar.addActionListener(e ->reservar());
-        btnCancelar.addActionListener(e ->cancelar());
-        btnLimpiar.addActionListener(e ->limpiar());
-        btnImprimir.addActionListener(e ->imprimir());
-        btnExtraer.addActionListener(e ->extraerConIA());
+        btnReservar.addActionListener(e -> reservar());
+        btnCancelar.addActionListener(e -> cancelar());
+        btnLimpiar.addActionListener(e -> limpiar());
+        btnImprimir.addActionListener(e -> imprimir());
+        btnExtraer.addActionListener(e -> extraerConIA());
+        btnRecargarCategorias.addActionListener(e -> recargarCategorias());
 
+        recargarCategorias();
         cargarTabla();
+    }
+
+    /** Vuelve a leer categorias.xml y reconstruye los checkboxes, conservando cuáles estaban marcados. */
+    private void recargarCategorias() {
+        List<String> idsMarcadosPrevios = new ArrayList<>();
+        for (JCheckBox chk : checksCategorias) {
+            if (chk.isSelected()) idsMarcadosPrevios.add((String) chk.getClientProperty("categoriaId"));
+        }
+
+        categorias = new CategoriaService().listar();
+
+        panelCategorias.removeAll();
+        checksCategorias.clear();
+        for (Categoria c : categorias) {
+            JCheckBox chk = new JCheckBox(c.getDescripcion());
+            chk.putClientProperty("categoriaId", c.getId());
+            chk.setSelected(idsMarcadosPrevios.contains(c.getId()));
+            panelCategorias.add(chk);
+            checksCategorias.add(chk);
+        }
+        panelCategorias.revalidate();
+        panelCategorias.repaint();
     }
 
     //Acciones
@@ -145,7 +176,7 @@ public class ReservaPanel extends JPanel{
             LocalTime horaFin = parsearHora(txtHoraFin.getText());
             List<String> categoriasSeleccionadas = obtenerCategoriasMarcadas();
 
-            ReservaService.ResultadoReserva resultado = controlador.crearReserva(
+            ResultadoReserva resultado = controlador.crearReserva(
                     funcionarioId, actividad, fecha, horaInicio, horaFin, categoriasSeleccionadas);
 
             if (resultado.isExito()) {
