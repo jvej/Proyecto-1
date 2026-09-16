@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
         JLabel lblUsuario = new JLabel("  Sesion: " + idUsuario + (esAdmin ? " (ADMIN)" : " (FUNCIONARIO)"));
         barra.add(lblUsuario, BorderLayout.WEST);
 
-        JButton btnCerrarSesion = new JButton("Log out");
+        JButton btnCerrarSesion = new JButton("Cerrar sesion");
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
 
         JPanel derecha = new JPanel(new FlowLayout(FlowLayout.RIGHT));

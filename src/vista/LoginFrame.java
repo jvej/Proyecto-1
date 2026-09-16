@@ -12,71 +12,46 @@ public class LoginFrame extends JFrame {
     private JTextField txtId;
     private JPasswordField txtClave;
 
-    private final LoginControlador controlador =
-            new LoginControlador();
+    private final LoginControlador controlador = new LoginControlador();
 
     public LoginFrame() {
 
-        setTitle(
-                "Sistema de Reservas - Iniciar Sesión"
-        );
+        setTitle("Sistema de Reservas - Iniciar Sesión");
 
         setSize(380, 300);
 
-        setDefaultCloseOperation(
-                JFrame.EXIT_ON_CLOSE
-        );
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLocationRelativeTo(null);
 
         setResizable(false);
 
-        JPanel panel =
-                new JPanel();
+        JPanel panel = new JPanel();
 
         panel.setLayout(null);
 
-        panel.setBackground(Color.black);
+        TemaOscuro.aplicarAPanel(panel);
 
         add(panel);
 
-        // ==========================================
         // TÍTULO
-        // ==========================================
 
-        JLabel lblTitulo =
-                new JLabel(
-                        "SISTEMA DE RESERVAS - LOGIN"
-                );
 
-        lblTitulo.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        15
-                )
-        );
+        JLabel lblTitulo = new JLabel("SISTEMA DE RESERVAS - LOGIN");
 
-        lblTitulo.setForeground(
-                Color.white
-        );
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 15));
 
-        lblTitulo.setBounds(
-                20,
-                15,
-                340,
-                30
-        );
+        TemaOscuro.aplicarAEtiqueta(lblTitulo);
+
+        lblTitulo.setBounds(20, 15, 340, 30);
 
         panel.add(lblTitulo);
 
-        // ==========================================
         // ID
-        // ==========================================
 
         JLabel lblId = new JLabel("ID:");
 
-        lblId.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblId);
 
         lblId.setBounds(30, 70, 100, 25);
 
@@ -88,13 +63,11 @@ public class LoginFrame extends JFrame {
         TemaOscuro.aplicarACampoTexto(txtId);
         panel.add(txtId);
 
-        // ==========================================
         // CLAVE
-        // ==========================================
 
         JLabel lblClave = new JLabel("Clave:");
 
-        lblClave.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblClave);
 
         lblClave.setBounds(30, 110, 100, 25);
         panel.add(lblClave);
@@ -126,9 +99,7 @@ public class LoginFrame extends JFrame {
 
         btnIngresar.addActionListener(e -> iniciarSesion());
 
-        btnLimpiar.addActionListener(
-                e -> limpiarCampos()
-        );
+        btnLimpiar.addActionListener(e -> limpiarCampos());
 
         btnCambiarClave.addActionListener(e -> new CambiarClavePanel(this).setVisible(true));
     }

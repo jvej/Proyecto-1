@@ -20,11 +20,11 @@ public class CambiarClavePanel extends JDialog {
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setBackground(Color.black);
+        TemaOscuro.aplicarAPanel(panel);
         add(panel);
 
         JLabel lblId = new JLabel("ID:");
-        lblId.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblId);
         lblId.setBounds(25, 20, 100, 25);
         panel.add(lblId);
 
@@ -33,7 +33,7 @@ public class CambiarClavePanel extends JDialog {
         panel.add(txtId);
 
         JLabel lblActual = new JLabel("Clave actual:");
-        lblActual.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblActual);
         lblActual.setBounds(25, 60, 110, 25);
         panel.add(lblActual);
 
@@ -42,7 +42,7 @@ public class CambiarClavePanel extends JDialog {
         panel.add(txtActual);
 
         JLabel lblNueva1 = new JLabel("Clave nueva:");
-        lblNueva1.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblNueva1);
         lblNueva1.setBounds(25, 100, 110, 25);
         panel.add(lblNueva1);
 
@@ -51,7 +51,7 @@ public class CambiarClavePanel extends JDialog {
         panel.add(txtNueva1);
 
         JLabel lblNueva2 = new JLabel("Repetir clave:");
-        lblNueva2.setForeground(Color.white);
+        TemaOscuro.aplicarAEtiqueta(lblNueva2);
         lblNueva2.setBounds(25, 140, 110, 25);
         panel.add(lblNueva2);
 
@@ -66,7 +66,13 @@ public class CambiarClavePanel extends JDialog {
         JButton btnCancelar = new JButton("❌ Cancelar");
         btnCancelar.setBounds(170, 190, 130, 30);
         panel.add(btnCancelar);
+        TemaOscuro.aplicarACampoTexto(txtId);
+        TemaOscuro.aplicarACampoTexto(txtActual);
+        TemaOscuro.aplicarACampoTexto(txtNueva1);
+        TemaOscuro.aplicarACampoTexto(txtNueva2);
 
+        TemaOscuro.aplicarABoton(btnAceptar);
+        TemaOscuro.aplicarABoton(btnCancelar);
         btnAceptar.addActionListener(e -> {
 
             try {
