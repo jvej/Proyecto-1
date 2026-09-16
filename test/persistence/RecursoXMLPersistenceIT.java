@@ -1,6 +1,6 @@
 package persistence;
 
-import modelo.Recurso;
+import modelo.Categoria;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -9,11 +9,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Prueba de INTEGRACIÓN: valida que RecursoXMLPersistence lea y escriba
+// Prueba de INTEGRACIÓN: valida que CategoriaXMLPersistence lea y escriba
 // correctamente contra el archivo XML real, no contra datos en memoria.
-class RecursoXMLPersistenceIT {
+// Mismo patrón que RecursoXMLPersistenceIT.
+class CategoriaXMLPersistenceIT {
 
-    private static final Path RUTA = Path.of("data/recursos.xml");
+    private static final Path RUTA = Path.of("data/categorias.xml");
     private String contenidoOriginal;
 
     @BeforeEach
@@ -28,15 +29,27 @@ class RecursoXMLPersistenceIT {
     }
 
     @Test
-    void escribirYLeerRecursoDesdeArchivoReal() {
-        RecursoXMLPersistence persistence = new RecursoXMLPersistence();
+    void escribirYLeerCategoriaDesdeArchivoReal() {
+        CategoriaXMLPersistence persistence = new CategoriaXMLPersistence();
 
-        List<Recurso> lista = persistence.readAll();
-        lista.add(new Recurso("IT-001", "CAT-TEST", "Recurso de integración"));
+        List<Categoria> lista = persistence.readAll();
+        lista.add(new Categoria("CAT-IT-001", "Categoria de integracion"));
         persistence.writeAll(lista);
 
-        List<Recurso> releido = persistence.readAll();
-        assertTrue(releido.stream().anyMatch(r ->
-                r.getId().equals("IT-001") && r.getCategoriaId().equals("CAT-TEST")));
+        List<Categoria> releido = persistence.readAll();
+        assertTrue(releido.stream().anyMatch(c ->
+                c.getId().equals("CAT-IT-001") && c.getDescripcion().equals("Categoria de integracion")));
+    }
+
+    @Test
+    void writeAllSobreescribeCompletamenteElArchivoAnterior() {
+        CategoriaXMLPersistence persistence = new CategoriaXMLPersistence();
+
+        persistence.writeAll(List.of(new Categoria("CAT-IT-A", "Primera")));
+        persistence.writeAll(List.of(new Categoria("CAT-IT-B", "Segunda")));
+
+        List<Categoria> releido = persistence.readAll();
+        assertEquals(1, releido.size());
+        assertEquals("CAT-IT-B", releido.get(0).getId());
     }
 }

@@ -74,136 +74,66 @@ public class LoginFrame extends JFrame {
         // ID
         // ==========================================
 
-        JLabel lblId =
-                new JLabel("ID:");
+        JLabel lblId = new JLabel("ID:");
 
-        lblId.setForeground(
-                Color.white
-        );
+        lblId.setForeground(Color.white);
 
-        lblId.setBounds(
-                30,
-                70,
-                100,
-                25
-        );
+        lblId.setBounds(30, 70, 100, 25);
 
         panel.add(lblId);
 
-        txtId =
-                new JTextField();
+        txtId = new JTextField();
 
-        txtId.setBounds(
-                140,
-                70,
-                190,
-                25
-        );
-
+        txtId.setBounds(140, 70, 190, 25);
+        TemaOscuro.aplicarACampoTexto(txtId);
         panel.add(txtId);
 
         // ==========================================
         // CLAVE
         // ==========================================
 
-        JLabel lblClave =
-                new JLabel("Clave:");
+        JLabel lblClave = new JLabel("Clave:");
 
-        lblClave.setForeground(
-                Color.white
-        );
+        lblClave.setForeground(Color.white);
 
-        lblClave.setBounds(
-                30,
-                110,
-                100,
-                25
-        );
-
+        lblClave.setBounds(30, 110, 100, 25);
         panel.add(lblClave);
 
-        txtClave =
-                new JPasswordField();
+        txtClave = new JPasswordField();
 
-        txtClave.setBounds(
-                140,
-                110,
-                190,
-                25
-        );
-
+        txtClave.setBounds(140, 110, 190, 25);
+        TemaOscuro.aplicarACampoTexto(txtClave);
         panel.add(txtClave);
 
-        // ==========================================
-        // BOTÓN INGRESAR
-        // ==========================================
+        JButton btnIngresar = new JButton(" ✅ ");
 
-        JButton btnIngresar =
-                new JButton("✅ Ingresar");
-
-        btnIngresar.setBounds(
-                30,
-                165,
-                150,
-                30
-        );
-
+        btnIngresar.setBounds(50, 165, 110, 30);
+        TemaOscuro.aplicarABoton(btnIngresar);
         panel.add(btnIngresar);
 
-        // ==========================================
-        // BOTÓN LIMPIAR
-        // ==========================================
+        JButton btnLimpiar = new JButton(" 🔄 ");
 
-        JButton btnLimpiar =
-                new JButton("🔄 Limpiar");
-
-        btnLimpiar.setBounds(
-                200,
-                165,
-                140,
-                30
-        );
-
+        btnLimpiar.setBounds(210, 165, 110, 30);
+        TemaOscuro.aplicarABoton(btnLimpiar);
         panel.add(btnLimpiar);
 
-        // ==========================================
-        // BOTÓN CAMBIAR CLAVE
-        // ==========================================
 
-        JButton btnCambiarClave =
-                new JButton("🔑 Cambiar clave");
+        JButton btnCambiarClave = new JButton(" 🔑 ");
 
-        btnCambiarClave.setBounds(
-                30,
-                205,
-                310,
-                30
-        );
-
+        btnCambiarClave.setBounds(80, 205, 210,30);
+        TemaOscuro.aplicarABoton(btnCambiarClave);
         panel.add(btnCambiarClave);
 
-        // ==========================================
-        // EVENTOS
-        // ==========================================
-
-        btnIngresar.addActionListener(
-                e -> iniciarSesion()
-        );
+        btnIngresar.addActionListener(e -> iniciarSesion());
 
         btnLimpiar.addActionListener(
                 e -> limpiarCampos()
         );
 
-        btnCambiarClave.addActionListener(
-                e ->
-                        new CambiarClavePanel(this)
-                                .setVisible(true)
-        );
+        btnCambiarClave.addActionListener(e -> new CambiarClavePanel(this).setVisible(true));
     }
 
-    // ==============================================
     // INICIAR SESIÓN
-    // ==============================================
 
     private void iniciarSesion() {
 
@@ -219,35 +149,24 @@ public class LoginFrame extends JFrame {
                 throw new Exception("Debe completar el ID y la clave.");
             }
 
-            // ======================================
             // AUTENTICAR USUARIO
-            // ======================================
 
             Usuario u = controlador.login(id, clave);
 
-            // ======================================
             // VALIDAR RESULTADO
-            // ======================================
 
             if (u == null) {
 
-                throw new Exception(
-                        "ID o clave incorrectos."
-                );
+                throw new Exception("ID o clave incorrectos.");
             }
 
-            // ======================================
             // GUARDAR USUARIO EN LA SESIÓN
-            // ======================================
 
             Sesion.getInstancia().setUsuarioActual(u);
 
-            // ======================================
             // ABRIR MENÚ PRINCIPAL
-            // ======================================
 
-            MainFrame menu =
-                    new MainFrame();
+            MainFrame menu = new MainFrame();
 
             menu.setVisible(true);
 
@@ -265,9 +184,7 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    // ==============================================
     // LIMPIAR CAMPOS
-    // ==============================================
 
     private void limpiarCampos() {
 
