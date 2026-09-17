@@ -10,4 +10,39 @@
         <nombre>Coso</nombre>
         <telefono>88888888</telefono>
     </funcionario>
+    <funcionario>
+        <id>1234</id>
+        <nombre>Axel</nombre>
+        <telefono>12345678</telefono>
+    </funcionario>
+    <funcionario>
+        <id>1243</id>
+        <nombre>Mariano</nombre>
+        <telefono>85541676</telefono>
+    </funcionario>
+    <funcionario>
+        <id>9999</id>
+        <nombre>Sidney</nombre>
+        <telefono>87654321</telefono>
+    </funcionario>
+    <funcionario>
+        <id>5555</id>
+        <nombre>Daniela</nombre>
+        <telefono>76541238</telefono>
+    </funcionario>
+    <funcionario>
+        <id>7777</id>
+        <nombre>Samuel</nombre>
+        <telefono>87659124</telefono>
+    </funcionario>
+    <funcionario>
+        <id>2222</id>
+        <nombre>Valeria</nombre>
+        <telefono>21345698</telefono>
+    </funcionario>
+    <funcionario>
+        <id>7575</id>
+        <nombre>Nicole</nombre>
+        <telefono>21345213</telefono>
+    </funcionario>
 </funcionarios>

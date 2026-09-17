@@ -20,4 +20,39 @@
         <clave>11</clave>
         <rol>FUNCIONARIO</rol>
     </usuario>
+    <usuario>
+        <id>1234</id>
+        <clave>abcd</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>1243</id>
+        <clave>0000</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>9999</id>
+        <clave>4444</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>5555</id>
+        <clave>tren</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>7777</id>
+        <clave>luqu3</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>2222</id>
+        <clave>k1l0</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
+    <usuario>
+        <id>7575</id>
+        <clave>f13st4</clave>
+        <rol>FUNCIONARIO</rol>
+    </usuario>
 </usuarios>
