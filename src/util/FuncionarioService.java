@@ -49,7 +49,6 @@ public class FuncionarioService {
                 telefono == null ? "" : telefono.trim()));
         persistence.writeAll(lista);
 
-        // La clave del usuario queda igual al id, tal como pide el enunciado.
         usuarios.add(new Usuario(idLimpio, idLimpio, Rol.FUNCIONARIO));
         usuarioPersistence.writeAll(usuarios);
     }
@@ -63,19 +62,33 @@ public class FuncionarioService {
                 f.setNombre(nombre.trim());
                 f.setTelefono(telefono == null ? "" : telefono.trim());
                 persistence.writeAll(lista);
-                return; // No toca usuarios.xml: la clave se administra aparte (Cambiar Clave).
+                return;
             }
         }
         throw new ValidacionException("No existe un funcionario con ese ID.");
     }
 
-    public void eliminar(String id) {
+    public void guardar(String id, String nombre, String telefono) throws ValidacionException {
         List<Funcionario> lista = persistence.readAll();
-        lista.removeIf(f -> f.getId().equalsIgnoreCase(id));
+        boolean existe = lista.stream().anyMatch(f -> f.getId().equalsIgnoreCase(id));
+        if (existe) {
+            modificar(id, nombre, telefono);
+        } else {
+            crear(id, nombre, telefono);
+        }
+    }
+
+    public void eliminar(String id) throws ValidacionException {
+        if (id == null || id.trim().isEmpty()) {
+            throw new ValidacionException("Seleccione un funcionario de la lista.");
+        }
+        List<Funcionario> lista = persistence.readAll();
+        boolean encontrado = lista.removeIf(f -> f.getId().equalsIgnoreCase(id));
+        if (!encontrado) {
+            throw new ValidacionException("No se encontró el funcionario con id: " + id);
+        }
         persistence.writeAll(lista);
 
-        // Si se borra el funcionario, también se borra su acceso — si no, un funcionario
-        // eliminado podría seguir logueándose e incluso hacer reservas.
         List<Usuario> usuarios = usuarioPersistence.readAll();
         usuarios.removeIf(u -> u.getId().equalsIgnoreCase(id));
         usuarioPersistence.writeAll(usuarios);

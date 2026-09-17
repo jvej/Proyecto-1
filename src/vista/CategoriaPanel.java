@@ -109,39 +109,30 @@ public class CategoriaPanel extends JPanel {
         }
     }
 
+
     private void guardar() {
         try {
-            String id = txtId.getText().trim();
-            String descripcion = txtDescripcion.getText().trim();
-
-            if (id.isEmpty()) {
-                controlador.crear(descripcion);
-                JOptionPane.showMessageDialog(this, "Categoría creada correctamente.");
-            } else {
-                controlador.modificar(id, descripcion);
-                JOptionPane.showMessageDialog(this, "Categoría actualizada correctamente.");
-            }
-
+            controlador.guardar(txtId.getText().trim(), txtDescripcion.getText().trim());
+            JOptionPane.showMessageDialog(this, "Categoría guardada correctamente.");
             limpiar();
             cargarTabla(controlador.listar());
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void borrar() {
-        String id = txtId.getText().trim();
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione una categoría de la lista.");
-            return;
-        }
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea borrar esta categoría?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            controlador.eliminar(id);
+    private void borrar() {
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que desea borrar esta categoría?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+        if (confirmacion != JOptionPane.YES_OPTION) return;
+
+        try {
+            controlador.eliminar(txtId.getText().trim());
             limpiar();
             cargarTabla(controlador.listar());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

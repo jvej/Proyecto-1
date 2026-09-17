@@ -13,5 +13,6 @@ public class FuncionarioControlador {
     public List<Funcionario> buscar(String texto) { return funcionarioService.buscar(texto); }
     public void crear(String id, String nombre, String telefono) throws ValidacionException { funcionarioService.crear(id, nombre, telefono); }
     public void modificar(String id, String nombre, String telefono) throws ValidacionException { funcionarioService.modificar(id, nombre, telefono); }
-    public void eliminar(String id) { funcionarioService.eliminar(id); }
+    public void guardar(String id, String nombre, String telefono) throws ValidacionException { funcionarioService.guardar(id, nombre, telefono); }
+    public void eliminar(String id) throws ValidacionException { funcionarioService.eliminar(id); }
 }

@@ -13,5 +13,6 @@ public class CategoriaControlador {
     public List<Categoria> buscar(String texto) { return categoriaService.buscar(texto); }
     public void crear(String descripcion) throws ValidacionException { categoriaService.crear(descripcion); }
     public void modificar(String id, String descripcion) throws ValidacionException { categoriaService.modificar(id, descripcion); }
-    public void eliminar(String id) { categoriaService.eliminar(id); }
+    public void guardar(String id, String descripcion) throws ValidacionException { categoriaService.guardar(id, descripcion); }
+    public void eliminar(String id) throws ValidacionException { categoriaService.eliminar(id); }
 }

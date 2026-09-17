@@ -112,19 +112,15 @@ public class FuncionarioPanel extends JPanel {
         }
     }
 
+
     private void guardar() {
         try {
             String id = txtId.getText().trim();
             String nombre = txtNombre.getText().trim();
             String telefono = txtTelefono.getText().trim();
 
-            if (controlador.buscar(id).stream().noneMatch(f -> f.getId().equalsIgnoreCase(id))) {
-                controlador.crear(id, nombre, telefono);
-                JOptionPane.showMessageDialog(this, "Funcionario creado correctamente.");
-            } else {
-                controlador.modificar(id, nombre, telefono);
-                JOptionPane.showMessageDialog(this, "Funcionario actualizado correctamente.");
-            }
+            controlador.guardar(id, nombre, telefono);
+            JOptionPane.showMessageDialog(this, "Funcionario guardado correctamente.");
 
             limpiar();
             cargarTabla(controlador.listar());
@@ -134,20 +130,19 @@ public class FuncionarioPanel extends JPanel {
         }
     }
 
-    private void borrar() {
-        String id = txtId.getText().trim();
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleccione un funcionario de la lista.");
-            return;
-        }
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Seguro que desea borrar el funcionario " + id + "?",
-                "Confirmar borrado", JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            controlador.eliminar(id);
+    private void borrar() {
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que desea borrar el funcionario " + txtId.getText().trim() + "?",
+                "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+        if (confirmacion != JOptionPane.YES_OPTION) return;
+
+        try {
+            controlador.eliminar(txtId.getText().trim());
             limpiar();
             cargarTabla(controlador.listar());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

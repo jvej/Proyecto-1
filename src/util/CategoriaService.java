@@ -52,9 +52,24 @@ public class CategoriaService {
         throw new ValidacionException("No existe una categoría con ese ID.");
     }
 
-    public void eliminar(String id) {
+    public void guardar(String id, String descripcion) throws ValidacionException {
+        if (id == null || id.trim().isEmpty()) {
+            crear(descripcion);
+        } else {
+            modificar(id, descripcion);
+        }
+    }
+
+    // MODIFICADO: antes no validaba nada. Ahora valida, igual que RecursoService.borrar().
+    public void eliminar(String id) throws ValidacionException {
+        if (id == null || id.trim().isEmpty()) {
+            throw new ValidacionException("Seleccione una categoría de la lista.");
+        }
         List<Categoria> lista = persistence.readAll();
-        lista.removeIf(c -> c.getId().equalsIgnoreCase(id));
+        boolean encontrada = lista.removeIf(c -> c.getId().equalsIgnoreCase(id));
+        if (!encontrada) {
+            throw new ValidacionException("No se encontró la categoría con id: " + id);
+        }
         persistence.writeAll(lista);
     }
 
