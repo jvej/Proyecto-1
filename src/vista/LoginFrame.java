@@ -81,9 +81,6 @@ public class LoginFrame extends JFrame {
             String id = txtId.getText().trim();
             String clave = new String(txtClave.getPassword()).trim();
 
-            // La validación de campos vacíos y de credenciales vive en
-            // UsuarioService (capa util/modelo), no acá. Si algo falla,
-            // controlador.login lanza ValidacionException y lo captura el catch.
             Usuario u = controlador.login(id, clave);
 
             // GUARDAR USUARIO EN LA SESIÓN

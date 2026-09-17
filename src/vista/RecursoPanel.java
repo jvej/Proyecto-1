@@ -14,8 +14,6 @@ import java.util.List;
 public class RecursoPanel extends JPanel {
     private final RecursoControlador controlador = new RecursoControlador();
 
-    // Ya NO es "final": se recarga cada vez que hace falta, para no quedar
-    // desactualizada si se crea una categoría nueva durante la misma sesión.
     private List<Categoria> categorias = new ArrayList<>();
 
     private JComboBox<String> cmbFiltroCategoria;
@@ -131,7 +129,7 @@ public class RecursoPanel extends JPanel {
         cargarTabla(controlador.listar());
     }
 
-    /** Vuelve a leer categorias.xml y repuebla ambos combos, sin perder la selección actual si sigue existiendo. */
+    /** Vuelve a leer categorias.xml y repuebla ambos combos, sin perder la selección actual si sigue existiendo*/
     private void recargarCategorias() {
         String filtroPrevio = (String) cmbFiltroCategoria.getSelectedItem();
         String categoriaPrevia = (String) cmbCategoria.getSelectedItem();

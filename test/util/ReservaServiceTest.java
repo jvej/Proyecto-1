@@ -39,16 +39,16 @@ class ReservaServiceTest {
     void crearReservaSinActividadLanzaExcepcion() {
         ReservaService service = new ReservaService();
         assertThrows(ValidacionException.class, () -> service.crearReserva(
-                "111", "", LocalDate.now().plusDays(1),
-                LocalTime.of(9, 0), LocalTime.of(10, 0), List.of("CAT-TEST")));
+                "111", "", LocalDate.now().plusDays(1).toString(),
+                LocalTime.of(9, 0).toString(), LocalTime.of(10, 0).toString(), List.of("CAT-TEST")));
     }
 
     @Test
     void crearReservaConHorarioInvalidoLanzaExcepcion() {
         ReservaService service = new ReservaService();
         assertThrows(ValidacionException.class, () -> service.crearReserva(
-                "111", "Reunion", LocalDate.now().plusDays(1),
-                LocalTime.of(10, 0), LocalTime.of(9, 0), List.of("CAT-TEST")));
+                "111", "Reunion", LocalDate.now().plusDays(1).toString(),
+                LocalTime.of(10, 0).toString(), LocalTime.of(9, 0).toString(), List.of("CAT-TEST")));
     }
 
     @Test
@@ -56,8 +56,8 @@ class ReservaServiceTest {
         new RecursoService().guardar("TEST-R1", "CAT-TEST", "Recurso de prueba");
 
         ReservaService.ResultadoReserva resultado = new ReservaService().crearReserva(
-                "111", "Reunion de prueba", LocalDate.now().plusDays(1),
-                LocalTime.of(9, 0), LocalTime.of(10, 0), List.of("CAT-TEST"));
+                "111", "Reunion de prueba", LocalDate.now().plusDays(1).toString(),
+                LocalTime.of(9, 0).toString(), LocalTime.of(10, 0).toString(), List.of("CAT-TEST"));
 
         assertTrue(resultado.isExito());
         assertEquals("TEST-R1", resultado.getReserva().getRecursosIds().get(0));
@@ -68,13 +68,14 @@ class ReservaServiceTest {
         new RecursoService().guardar("TEST-R1", "CAT-TEST", "Recurso de prueba");
         ReservaService service = new ReservaService();
         LocalDate fecha = LocalDate.now().plusDays(2);
+        String textoFecha = fecha.toString();
 
-        service.crearReserva("111", "Primera reunion", fecha,
-                LocalTime.of(9, 0), LocalTime.of(10, 0), List.of("CAT-TEST"));
+        service.crearReserva("111", "Primera reunion", textoFecha,
+                LocalTime.of(9, 0).toString(), LocalTime.of(10, 0).toString(), List.of("CAT-TEST"));
 
         ReservaService.ResultadoReserva resultado = service.crearReserva(
-                "222", "Segunda reunion", fecha,
-                LocalTime.of(9, 30), LocalTime.of(10, 30), List.of("CAT-TEST"));
+                "222", "Segunda reunion", textoFecha,
+                LocalTime.of(9, 30).toString(), LocalTime.of(10, 30).toString(), List.of("CAT-TEST"));
 
         assertFalse(resultado.isExito());
         assertTrue(resultado.getCategoriasNoDisponibles().contains("CAT-TEST"));
@@ -84,8 +85,8 @@ class ReservaServiceTest {
     void cancelarReservaDeOtroFuncionarioLanzaExcepcion() throws Exception {
         new RecursoService().guardar("TEST-R1", "CAT-TEST", "Recurso de prueba");
         ReservaService service = new ReservaService();
-        var resultado = service.crearReserva("111", "Reunion", LocalDate.now().plusDays(3),
-                LocalTime.of(9, 0), LocalTime.of(10, 0), List.of("CAT-TEST"));
+        var resultado = service.crearReserva("111", "Reunion", LocalDate.now().plusDays(3).toString(),
+                LocalTime.of(9, 0).toString(), LocalTime.of(10, 0).toString(), List.of("CAT-TEST"));
 
         String idReserva = resultado.getReserva().getId();
         assertThrows(ValidacionException.class, () -> service.cancelarReserva(idReserva, "222"));
