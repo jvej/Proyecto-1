@@ -81,8 +81,6 @@ public class CambiarClavePanel extends JDialog {
                 String nueva1 = new String(txtNueva1.getPassword()).trim();
                 String nueva2 = new String(txtNueva2.getPassword()).trim();
 
-                // La validación de campos vacíos y de que las claves nuevas
-                // coincidan vive en UsuarioService (capa util/modelo), no acá.
                 controlador.cambiarClave(id, actual, nueva1, nueva2);
 
                 JOptionPane.showMessageDialog(this, "Clave actualizada correctamente.");

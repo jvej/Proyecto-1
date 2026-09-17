@@ -83,10 +83,8 @@ public class LoginFrame extends JFrame {
 
             Usuario u = controlador.login(id, clave);
 
-            // GUARDAR USUARIO EN LA SESIÓN
             Sesion.getInstancia().setUsuarioActual(u);
 
-            // ABRIR MENÚ PRINCIPAL
             MainFrame menu = new MainFrame();
             menu.setVisible(true);
 

@@ -9,13 +9,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Genera archivos PDF escribiendo directamente la estructura binaria del
- * formato PDF, sin depender de ninguna librería externa (nada de Maven,
- * nada de .jar que instalar). Usa las fuentes estándar Helvetica-Bold
- * (título) y Courier (tabla), que vienen incluidas en cualquier lector
- * de PDF, así que no hace falta incrustar ninguna fuente.
- */
 public class PDFReportUtil {
 
     private static final Charset PDF_CHARSET = Charset.forName("Cp1252"); // soporta tildes/ñ
@@ -47,8 +40,6 @@ public class PDFReportUtil {
         }
     }
 
-    // ---------- Construcción del PDF (sin librerías externas) ----------
-
     private static byte[] construirPdf(String titulo, String[] columnas, List<String[]> filas) throws Exception {
         List<String> lineasTabla = formatearTabla(columnas, filas);
         List<List<String>> paginas = paginar(lineasTabla);
@@ -63,13 +54,11 @@ public class PDFReportUtil {
         int objPages = 2;
         int objFontTitulo = 3;
         int objFontTabla = 4;
-        int primerObjPagina = 5; // cada pagina usa 2 objetos: Page y su Contents
+        int primerObjPagina = 5;
 
-        // 1) Catalogo
         offsets.add(out.size());
         escribir(out, objCatalogo + " 0 obj\n<< /Type /Catalog /Pages " + objPages + " 0 R >>\nendobj\n");
 
-        // 2) Pages (se completa el Kids al final, pero reservamos el numero ahora)
         StringBuilder kids = new StringBuilder();
         for (int i = 0; i < totalPaginas; i++) {
             int objPagina = primerObjPagina + i * 2;
@@ -78,15 +67,12 @@ public class PDFReportUtil {
         offsets.add(out.size());
         escribir(out, objPages + " 0 obj\n<< /Type /Pages /Kids [ " + kids + "] /Count " + totalPaginas + " >>\nendobj\n");
 
-        // 3) Fuente del titulo
         offsets.add(out.size());
         escribir(out, objFontTitulo + " 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>\nendobj\n");
 
-        // 4) Fuente de la tabla (monoespaciada, para que las columnas se alineen)
         offsets.add(out.size());
         escribir(out, objFontTabla + " 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>\nendobj\n");
 
-        // 5) Un objeto Page + un objeto Contents por cada pagina
         for (int i = 0; i < totalPaginas; i++) {
             int objPagina = primerObjPagina + i * 2;
             int objContenido = objPagina + 1;
@@ -106,7 +92,6 @@ public class PDFReportUtil {
             escribir(out, "\nendstream\nendobj\n");
         }
 
-        // xref
         int xrefOffset = out.size();
         int totalObjetos = offsets.size();
         escribir(out, "xref\n0 " + (totalObjetos + 1) + "\n");
@@ -121,7 +106,6 @@ public class PDFReportUtil {
         return out.toByteArray();
     }
 
-    /** Arma las líneas de texto de la tabla, con las columnas alineadas por ancho fijo (fuente monoespaciada). */
     private static List<String> formatearTabla(String[] columnas, List<String[]> filas) {
         int[] anchos = new int[columnas.length];
         for (int i = 0; i < columnas.length; i++) {

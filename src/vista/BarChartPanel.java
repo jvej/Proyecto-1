@@ -16,7 +16,6 @@ public class BarChartPanel extends JPanel {
     private String titulo = "";
     private boolean truncarEtiquetas = false;
 
-    // Para tooltips: cada entrada guarda [x, ancho, etiqueta completa]
     private final List<int[]> zonasBarras = new ArrayList<>();
     private final List<String> etiquetasCompletas = new ArrayList<>();
 
@@ -110,7 +109,6 @@ public class BarChartPanel extends JPanel {
         int maximo = datos.values().stream().max(Integer::compareTo).orElse(1);
         if (maximo == 0) maximo = 1;
 
-        // Líneas de cuadrícula horizontales (4 divisiones)
         int divisiones = Math.min(4, maximo);
         g2.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         FontMetrics fmY = g2.getFontMetrics();
@@ -120,7 +118,6 @@ public class BarChartPanel extends JPanel {
             g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{4, 3}, 0));
             g2.drawLine(MARGEN_IZQ, yLinea, ancho - MARGEN_DER, yLinea);
 
-            // Valor en eje Y
             int valorY = (int) Math.round((double) i / divisiones * maximo);
             String labelY = String.valueOf(valorY);
             g2.setColor(COLOR_ETIQUETA);
@@ -169,7 +166,6 @@ public class BarChartPanel extends JPanel {
             String sValor = String.valueOf(valor);
             g2.drawString(sValor, x + (anchoBarra - fmVal.stringWidth(sValor)) / 2, yBarra - 5);
 
-            // Etiqueta: truncar si es necesario
             g2.setFont(fuenteEtiqueta);
             g2.setColor(COLOR_ETIQUETA);
             String etiquetaCompleta = entrada.getKey();
@@ -179,7 +175,6 @@ public class BarChartPanel extends JPanel {
             int etiqX = x + (espacioPorBarra - fmEtiq.stringWidth(etiqueta)) / 2;
             g2.drawString(etiqueta, etiqX, origenY + 16);
 
-            // Registrar zona para tooltip
             zonasBarras.add(new int[]{x, anchoBarra});
             etiquetasCompletas.add(etiquetaCompleta);
 

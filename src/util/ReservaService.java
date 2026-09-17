@@ -143,7 +143,6 @@ public class ReservaService {
         return String.format("RES-%06d", max + 1);
     }
 
-    /** Antes vivía en ReservaPanel como parsearFecha(); se movió acá para que la Vista no lance excepciones. */
     private LocalDate parsearFecha(String texto) throws ValidacionException {
         try {
             return LocalDate.parse(texto == null ? "" : texto.trim());
@@ -152,7 +151,6 @@ public class ReservaService {
         }
     }
 
-    /** Antes vivía en ReservaPanel como parsearHora(); se movió acá por el mismo motivo. */
     private LocalTime parsearHora(String texto) throws ValidacionException {
         try {
             return LocalTime.parse(texto == null ? "" : texto.trim());

@@ -129,7 +129,6 @@ public class RecursoPanel extends JPanel {
         cargarTabla(controlador.listar());
     }
 
-    /** Vuelve a leer categorias.xml y repuebla ambos combos, sin perder la selección actual si sigue existiendo*/
     private void recargarCategorias() {
         String filtroPrevio = (String) cmbFiltroCategoria.getSelectedItem();
         String categoriaPrevia = (String) cmbCategoria.getSelectedItem();

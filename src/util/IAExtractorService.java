@@ -58,7 +58,6 @@ public class IAExtractorService {
         return sb.toString();
     }
 
-    // Armar el JSON de salida a mano
 
     private String construirCuerpoRequest(String prompt) {
         String promptEscapado = escaparJson(prompt);
@@ -73,9 +72,7 @@ public class IAExtractorService {
                 .replace("\t", "\\t");
     }
 
-    //Leer el JSON de entrada con regex
 
-    // Busca "text": "..." (el texto generado por Gemini) dentro de la respuesta completa.
     private String extraerTextoDeRespuesta(String jsonRespuesta) {
         String textoEscapado = extraerCampoTexto(jsonRespuesta, "text");
         if (textoEscapado == null) {
@@ -100,14 +97,12 @@ public class IAExtractorService {
         return datos;
     }
 
-    // Captura el valor de "nombreCampo": "valor" — incluyendo comillas/backslashes escapados dentro del valor.
     private String extraerCampoTexto(String json, String nombreCampo) {
         Pattern patron = Pattern.compile("\"" + nombreCampo + "\"\\s*:\\s*\"((?:\\\\.|[^\"\\\\])*)\"");
         Matcher m = patron.matcher(json);
         return m.find() ? m.group(1) : null;
     }
 
-    // Captura el arreglo "nombreCampo": ["a", "b", ...] y devuelve cada elemento ya limpio.
     private List<String> extraerArregloTexto(String json, String nombreCampo) {
         List<String> resultado = new ArrayList<>();
         Pattern patronArreglo = Pattern.compile("\"" + nombreCampo + "\"\\s*:\\s*\\[(.*?)]", Pattern.DOTALL);
@@ -123,7 +118,6 @@ public class IAExtractorService {
         return resultado;
     }
 
-    // Convierte \" -> " , \\ -> \ , \n -> salto de línea real, etc.
     private String desescaparJson(String texto) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < texto.length(); i++) {

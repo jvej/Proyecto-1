@@ -62,11 +62,9 @@ public class ActividadPanel extends JPanel {
         try {
             Map<LocalDate, Map<Integer, Celda>> matriz = controlador.obtenerMatrizSemana(txtFecha.getText());
 
-            // Dias ordenados de lunes a domingo (el Map de Java no garantiza orden, asi que los orden aparte).
             List<LocalDate> dias = new ArrayList<>(matriz.keySet());
             dias.sort(LocalDate::compareTo);
 
-            // Columnas: "Hora" + una por cada dia de la semana
             String[] columnas = new String[dias.size() + 1];
             columnas[0] = "Hora";
             for (int i = 0; i < dias.size(); i++) {

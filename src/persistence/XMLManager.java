@@ -13,7 +13,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
-//Motor de bajo nivel para leer/escribir XML con DOM. Solo lo usan las clases XxxXMLPersistence.
 public class XMLManager {
 
     public static Document cargarODCrear(String rutaArchivo, String nombreRaiz) {

@@ -17,7 +17,6 @@ import java.util.List;
 public class ReservaPanel extends JPanel {
     private final ReservaControlador controlador = new ReservaControlador();
 
-    // Ya NO es "final": se recarga cada vez que hace falta.
     private List<Categoria> categorias = new ArrayList<>();
     private final List<JCheckBox> checksCategorias = new ArrayList<>();
 
@@ -27,8 +26,6 @@ public class ReservaPanel extends JPanel {
     private JTextField txtHoraInicio;
     private JTextField txtHoraFin;
 
-    // Contenedor de checkboxes: tamaño FIJO con scroll, para que agregar o
-    // quitar categorías nunca mueva los botones/tabla que están debajo.
     private JPanel panelCategorias;
 
     private JTable tabla;
@@ -83,7 +80,6 @@ public class ReservaPanel extends JPanel {
         txtHoraFin.setBounds(670, 90, 80, 25);
         add(txtHoraFin);
 
-        //Categorías (checkboxes, uno por categoría real) — zona FIJA con scroll
         JLabel lblCategorias = new JLabel("Categorías requeridas:");
         lblCategorias.setBounds(20, 125, 200, 20);
         add(lblCategorias);
@@ -98,7 +94,6 @@ public class ReservaPanel extends JPanel {
         scrollCategorias.setBounds(20, 148, 750, 90);
         add(scrollCategorias);
 
-        //Botones (posiciones FIJAS: ya no dependen de cuántas categorías haya)
         JButton btnReservar = new JButton("Reservar");
         btnReservar.setBounds(20, 248, 110, 28);
         add(btnReservar);
@@ -143,7 +138,6 @@ public class ReservaPanel extends JPanel {
         cargarTabla();
     }
 
-    /** Vuelve a leer categorias.xml y reconstruye los checkboxes, conservando cuáles estaban marcados. */
     private void recargarCategorias() {
         List<String> idsMarcadosPrevios = new ArrayList<>();
         for (JCheckBox chk : checksCategorias) {
@@ -173,8 +167,6 @@ public class ReservaPanel extends JPanel {
             String actividad = txtActividad.getText();
             List<String> categoriasSeleccionadas = obtenerCategoriasMarcadas();
 
-            // La conversión de fecha/hora (y su validación de formato) vive ahora
-            // en ReservaService (capa util/modelo); esta Vista solo pasa el texto.
             ResultadoReserva resultado = controlador.crearReserva(
                     funcionarioId, actividad, txtFecha.getText(), txtHoraInicio.getText(), txtHoraFin.getText(),
                     categoriasSeleccionadas);

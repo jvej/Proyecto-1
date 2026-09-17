@@ -15,12 +15,10 @@ public class EstadisticaPanel extends JPanel {
 
     private final EstadisticaControlador controlador = new EstadisticaControlador();
 
-    // Componentes de la columna "Recursos"
     private JTextField txtDesdeRecursos, txtHastaRecursos;
     private DefaultTableModel modeloRecursos;
     private BarChartPanel graficoRecursos;
 
-    // Componentes de la columna "Actividades"
     private JTextField txtDesdeActividades, txtHastaActividades;
     private DefaultTableModel modeloActividades;
     private BarChartPanel graficoActividades;
@@ -33,7 +31,6 @@ public class EstadisticaPanel extends JPanel {
         add(construirColumnaActividades());
     }
 
-    // ---------- COLUMNA: Recursos por categoria ----------
 
     private JPanel construirColumnaRecursos() {
         JPanel columna = new JPanel(new BorderLayout(5, 5));
@@ -87,7 +84,6 @@ public class EstadisticaPanel extends JPanel {
         }
     }
 
-    // ---------- COLUMNA: Actividades por semana ----------
 
     private JPanel construirColumnaActividades() {
         JPanel columna = new JPanel(new BorderLayout(5, 5));
@@ -145,7 +141,6 @@ public class EstadisticaPanel extends JPanel {
         }
     }
 
-    // ---------- Reporte PDF (compartido por ambas columnas) ----------
 
     private void imprimirTabla(DefaultTableModel modelo, String titulo) {
         if (modelo.getRowCount() == 0) {
