@@ -29,9 +29,10 @@ public class FuncionarioService {
         return resultado;
     }
 
-    public void crear(String id, String nombre, String telefono) throws ValidacionException {
+    public void crear(String id, String nombre, String telefono, String clave) throws ValidacionException {
         if (id == null || id.trim().isEmpty()) throw new ValidacionException("El ID es obligatorio.");
         if (nombre == null || nombre.trim().isEmpty()) throw new ValidacionException("El nombre es obligatorio.");
+        if (clave == null || clave.trim().isEmpty()) throw new ValidacionException("La clave es obligatoria.");
 
         String idLimpio = id.trim();
 
@@ -45,11 +46,11 @@ public class FuncionarioService {
             if (u.getId().equalsIgnoreCase(idLimpio)) throw new ValidacionException("Ya existe un usuario con ese ID.");
         }
 
-        lista.add(new Funcionario(idLimpio, idLimpio, Rol.FUNCIONARIO, nombre.trim(),
+        lista.add(new Funcionario(idLimpio, "", Rol.FUNCIONARIO, nombre.trim(),
                 telefono == null ? "" : telefono.trim()));
         persistence.writeAll(lista);
 
-        usuarios.add(new Usuario(idLimpio, idLimpio, Rol.FUNCIONARIO));
+        usuarios.add(new Usuario(idLimpio, clave.trim(), Rol.FUNCIONARIO));
         usuarioPersistence.writeAll(usuarios);
     }
 
@@ -68,13 +69,13 @@ public class FuncionarioService {
         throw new ValidacionException("No existe un funcionario con ese ID.");
     }
 
-    public void guardar(String id, String nombre, String telefono) throws ValidacionException {
+    public void guardar(String id, String nombre, String telefono, String clave) throws ValidacionException {
         List<Funcionario> lista = persistence.readAll();
         boolean existe = lista.stream().anyMatch(f -> f.getId().equalsIgnoreCase(id));
         if (existe) {
             modificar(id, nombre, telefono);
         } else {
-            crear(id, nombre, telefono);
+            crear(id, nombre, telefono, clave);
         }
     }
 

@@ -18,6 +18,7 @@ public class FuncionarioPanel extends JPanel {
     private JTextField txtId;
     private JTextField txtNombre;
     private JTextField txtTelefono;
+    private JPasswordField txtClave;
     private JTable tabla;
     private DefaultTableModel modeloTabla;
 
@@ -55,7 +56,7 @@ public class FuncionarioPanel extends JPanel {
     }
 
     private JPanel construirPanelFormulario() {
-        JPanel panel = new JPanel(new GridLayout(2, 4, 8, 8));
+        JPanel panel = new JPanel(new GridLayout(3, 4, 8, 8));
         panel.setBorder(BorderFactory.createTitledBorder("Funcionario"));
 
         panel.add(new JLabel("ID:"));
@@ -70,6 +71,13 @@ public class FuncionarioPanel extends JPanel {
         txtTelefono = new JTextField();
         panel.add(txtTelefono);
 
+        panel.add(new JLabel("Clave:"));
+        txtClave = new JPasswordField();
+        panel.add(txtClave);
+
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+
         JPanel botones = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         JButton btnGuardar = new JButton("💾 Guardar");
         JButton btnBorrar = new JButton("🗑 Borrar");
@@ -77,6 +85,7 @@ public class FuncionarioPanel extends JPanel {
         botones.add(btnGuardar);
         botones.add(btnBorrar);
         botones.add(btnLimpiar);
+        panel.add(new JLabel());
         panel.add(botones);
 
         btnGuardar.addActionListener(e -> guardar());
@@ -100,6 +109,8 @@ public class FuncionarioPanel extends JPanel {
                 txtNombre.setText(modeloTabla.getValueAt(fila, 1).toString());
                 txtTelefono.setText(modeloTabla.getValueAt(fila, 2).toString());
                 txtId.setEditable(false);
+                txtClave.setText("");
+                txtClave.setEditable(false);
             }
         });
         return new JScrollPane(tabla);
@@ -118,8 +129,9 @@ public class FuncionarioPanel extends JPanel {
             String id = txtId.getText().trim();
             String nombre = txtNombre.getText().trim();
             String telefono = txtTelefono.getText().trim();
+            String clave = new String(txtClave.getPassword()).trim();
 
-            controlador.guardar(id, nombre, telefono);
+            controlador.guardar(id, nombre, telefono, clave);
             JOptionPane.showMessageDialog(this, "Funcionario guardado correctamente.");
 
             limpiar();
@@ -150,9 +162,11 @@ public class FuncionarioPanel extends JPanel {
         txtId.setText("");
         txtNombre.setText("");
         txtTelefono.setText("");
+        txtClave.setText("");
         txtBuscar.setText("");
         tabla.clearSelection();
         txtId.setEditable(true);
+        txtClave.setEditable(true);
     }
 
     private void imprimirReporte() {

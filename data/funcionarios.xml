@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<funcionarios/>
+<funcionarios>
+    <funcionario>
+        <id>123</id>
+        <nombre>Coso</nombre>
+        <telefono>87892950</telefono>
+    </funcionario>
+    <funcionario>
+        <id>121212</id>
+        <nombre>Coso</nombre>
+        <telefono>88888888</telefono>
+    </funcionario>
+</funcionarios>
