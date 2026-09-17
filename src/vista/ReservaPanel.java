@@ -296,5 +296,5 @@ public class ReservaPanel extends JPanel {
         }
         return nombres;
     }
-    
+
 }
