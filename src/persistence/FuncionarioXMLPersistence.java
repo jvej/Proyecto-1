@@ -22,7 +22,7 @@ public class FuncionarioXMLPersistence implements XMLPersistence<Funcionario> {
             Element el = (Element) nodos.item(i);
             lista.add(new Funcionario(
                     XMLManager.getTexto(el, "id"),
-                    XMLManager.getTexto(el, "clave"),
+                    "",
                     Rol.FUNCIONARIO,
                     XMLManager.getTexto(el, "nombre"),
                     XMLManager.getTexto(el, "telefono")
@@ -40,7 +40,6 @@ public class FuncionarioXMLPersistence implements XMLPersistence<Funcionario> {
         for (Funcionario f : objects) {
             Element nuevo = doc.createElement("funcionario");
             XMLManager.crearHijoTexto(doc, nuevo, "id", f.getId());
-            XMLManager.crearHijoTexto(doc, nuevo, "clave", f.getClave());
             XMLManager.crearHijoTexto(doc, nuevo, "nombre", f.getNombre());
             XMLManager.crearHijoTexto(doc, nuevo, "telefono", f.getTelefono());
             raiz.appendChild(nuevo);
