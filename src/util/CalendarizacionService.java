@@ -38,10 +38,14 @@ public class CalendarizacionService {
 
     public List<RecursoInfo> obtenerRecursos(String idCategoria) throws ValidacionException {
         if (idCategoria == null || idCategoria.trim().isEmpty()) throw new ValidacionException("Debe seleccionar una categoría.");
-        return recursoPersistence.readAll().stream()
+        List<RecursoInfo> recursos = recursoPersistence.readAll().stream()
                 .filter(r -> r.getCategoriaId().equalsIgnoreCase(idCategoria.trim()))
                 .map(r -> new RecursoInfo(r.getId(), r.getCategoriaId(), r.getDescripcion()))
                 .collect(Collectors.toList());
+        if (recursos.isEmpty()) {
+            throw new ValidacionException("Esa categoría no tiene recursos registrados todavía.");
+        }
+        return recursos;
     }
 
     public LocalDate validarFecha(String textoFecha) throws ValidacionException {

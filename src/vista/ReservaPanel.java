@@ -171,13 +171,13 @@ public class ReservaPanel extends JPanel {
         try {
             String funcionarioId = Sesion.getInstancia().getUsuarioActual().getId();
             String actividad = txtActividad.getText();
-            LocalDate fecha = parsearFecha(txtFecha.getText());
-            LocalTime horaInicio = parsearHora(txtHoraInicio.getText());
-            LocalTime horaFin = parsearHora(txtHoraFin.getText());
             List<String> categoriasSeleccionadas = obtenerCategoriasMarcadas();
 
+            // La conversión de fecha/hora (y su validación de formato) vive ahora
+            // en ReservaService (capa util/modelo); esta Vista solo pasa el texto.
             ResultadoReserva resultado = controlador.crearReserva(
-                    funcionarioId, actividad, fecha, horaInicio, horaFin, categoriasSeleccionadas);
+                    funcionarioId, actividad, txtFecha.getText(), txtHoraInicio.getText(), txtHoraFin.getText(),
+                    categoriasSeleccionadas);
 
             if (resultado.isExito()) {
                 JOptionPane.showMessageDialog(this,
@@ -296,20 +296,5 @@ public class ReservaPanel extends JPanel {
         }
         return nombres;
     }
-
-    private LocalDate parsearFecha(String texto) {
-        try {
-            return LocalDate.parse(texto.trim());
-        } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Fecha inválida. Use el formato aaaa-mm-dd.");
-        }
-    }
-
-    private LocalTime parsearHora(String texto) {
-        try {
-            return LocalTime.parse(texto.trim());
-        } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Hora inválida. Use el formato hh:mm.");
-        }
-    }
+    
 }

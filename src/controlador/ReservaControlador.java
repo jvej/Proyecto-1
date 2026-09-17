@@ -5,8 +5,6 @@ import modelo.ValidacionException;
 import util.ReservaService;
 import util.ReservaService.ResultadoReserva;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 public class ReservaControlador {
@@ -14,10 +12,10 @@ public class ReservaControlador {
 
     public List<Reserva> misReservas(String funcionarioId) { return reservaService.misReservas(funcionarioId); }
 
-    public ResultadoReserva crearReserva(String funcionarioId, String actividad, LocalDate fecha,
-                                         LocalTime horaInicio, LocalTime horaFin,
+    public ResultadoReserva crearReserva(String funcionarioId, String actividad, String textoFecha,
+                                         String textoHoraInicio, String textoHoraFin,
                                          List<String> categoriasIds) throws ValidacionException {
-        return reservaService.crearReserva(funcionarioId, actividad, fecha, horaInicio, horaFin, categoriasIds);
+        return reservaService.crearReserva(funcionarioId, actividad, textoFecha, textoHoraInicio, textoHoraFin, categoriasIds);
     }
 
     public void cancelarReserva(String id, String funcionarioId) throws ValidacionException {

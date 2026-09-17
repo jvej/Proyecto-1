@@ -66,20 +66,20 @@ public class CalendarizacionPanel extends JPanel {
     }
 
     private void cargarMatriz() {
-        try {
-            Categoria categoriaSeleccionada = (Categoria) comboCategoria.getSelectedItem();
-            if (categoriaSeleccionada == null) {
-                throw new Exception("No hay categorías registradas todavía.");
-            }
+        Categoria categoriaSeleccionada = (Categoria) comboCategoria.getSelectedItem();
+        if (categoriaSeleccionada == null) {
+            // No es un error de negocio, es que el combo no tiene items: se avisa y se sale, sin throw.
+            JOptionPane.showMessageDialog(this, "No hay categorías registradas todavía.");
+            return;
+        }
 
+        try {
+            // "Esa categoría no tiene recursos registrados todavía." ahora lo valida
+            // CalendarizacionService (capa util/modelo), no esta Vista.
             recursosActuales = controlador.obtenerRecursos(categoriaSeleccionada.getId());
-            if (recursosActuales.isEmpty()) {
-                throw new Exception("Esa categoría no tiene recursos registrados todavía.");
-            }
 
             Map<String, Map<Integer, Celda>> matriz = controlador.obtenerMatriz(txtFecha.getText(), recursosActuales);
 
-            // Columnas: "Hora" + una por cada recurso
             String[] columnas = new String[recursosActuales.size() + 1];
             columnas[0] = "Hora";
             for (int i = 0; i < recursosActuales.size(); i++) {

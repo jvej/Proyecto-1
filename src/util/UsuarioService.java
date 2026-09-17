@@ -18,9 +18,15 @@ public class UsuarioService {
         throw new ValidacionException("ID o clave incorrectos.");
     }
 
-    public void cambiarClave(String id, String claveActual, String claveNueva) throws ValidacionException {
-        if (id == null || claveActual == null || claveNueva == null || claveNueva.trim().isEmpty()) {
+    public void cambiarClave(String id, String claveActual, String claveNueva, String claveNuevaConfirmacion) throws ValidacionException {
+        if (id == null || id.trim().isEmpty()
+                || claveActual == null || claveActual.trim().isEmpty()
+                || claveNueva == null || claveNueva.trim().isEmpty()
+                || claveNuevaConfirmacion == null || claveNuevaConfirmacion.trim().isEmpty()) {
             throw new ValidacionException("Complete todos los campos.");
+        }
+        if (!claveNueva.equals(claveNuevaConfirmacion)) {
+            throw new ValidacionException("Las claves nuevas no coinciden.");
         }
         var lista = persistence.readAll();
         for (Usuario u : lista) {

@@ -11,7 +11,7 @@ public class LoginControlador {
         return usuarioService.autenticar(id, clave);
     }
 
-    public void cambiarClave(String id, String claveActual, String claveNueva) throws ValidacionException {
-        usuarioService.cambiarClave(id, claveActual, claveNueva);
+    public void cambiarClave(String id, String claveActual, String claveNueva, String claveNuevaConfirmacion) throws ValidacionException {
+        usuarioService.cambiarClave(id, claveActual, claveNueva, claveNuevaConfirmacion);
     }
 }

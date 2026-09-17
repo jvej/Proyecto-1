@@ -66,45 +66,29 @@ public class CambiarClavePanel extends JDialog {
         JButton btnCancelar = new JButton("❌ Cancelar");
         btnCancelar.setBounds(170, 190, 130, 30);
         panel.add(btnCancelar);
+
         TemaOscuro.aplicarACampoTexto(txtId);
         TemaOscuro.aplicarACampoTexto(txtActual);
         TemaOscuro.aplicarACampoTexto(txtNueva1);
         TemaOscuro.aplicarACampoTexto(txtNueva2);
-
         TemaOscuro.aplicarABoton(btnAceptar);
         TemaOscuro.aplicarABoton(btnCancelar);
+
         btnAceptar.addActionListener(e -> {
-
             try {
-
                 String id = txtId.getText().trim();
-
                 String actual = new String(txtActual.getPassword()).trim();
-
                 String nueva1 = new String(txtNueva1.getPassword()).trim();
-
                 String nueva2 = new String(txtNueva2.getPassword()).trim();
 
-                // Validar campos vacíos
-                if (id.isEmpty() || actual.isEmpty() || nueva1.isEmpty() || nueva2.isEmpty()) {
+                // La validación de campos vacíos y de que las claves nuevas
+                // coincidan vive en UsuarioService (capa util/modelo), no acá.
+                controlador.cambiarClave(id, actual, nueva1, nueva2);
 
-                    throw new Exception("Complete todos los campos.");
-                }
-
-                // Validar que las claves nuevas coincidan
-                if (!nueva1.equals(nueva2)) {
-                    throw new Exception("Las claves nuevas no coinciden.");
-                }
-
-                controlador.cambiarClave(id, actual, nueva1);
-
-                // Si llegamos aquí, todo salió bien.
                 JOptionPane.showMessageDialog(this, "Clave actualizada correctamente.");
-
                 dispose();
 
             } catch (Exception ex) {
-
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });

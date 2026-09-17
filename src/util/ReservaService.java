@@ -8,6 +8,7 @@ import persistence.ReservaXMLPersistence;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,6 @@ public class ReservaService {
     private final ReservaXMLPersistence reservaPersistence = new ReservaXMLPersistence();
     private final RecursoXMLPersistence recursoPersistence = new RecursoXMLPersistence();
 
-    /** Resultado de intentar crear una reserva: éxito con la reserva creada, o fallo con las categorías sin disponibilidad. */
     public static class ResultadoReserva {
         private boolean exito;
         private Reserva reserva;
@@ -49,9 +49,12 @@ public class ReservaService {
         return resultado;
     }
 
-    public ResultadoReserva crearReserva(String funcionarioId, String actividad, LocalDate fecha,
-                                         LocalTime horaInicio, LocalTime horaFin,
+    public ResultadoReserva crearReserva(String funcionarioId, String actividad, String textoFecha,
+                                         String textoHoraInicio, String textoHoraFin,
                                          List<String> categoriasIds) throws ValidacionException {
+        LocalDate fecha = parsearFecha(textoFecha);
+        LocalTime horaInicio = parsearHora(textoHoraInicio);
+        LocalTime horaFin = parsearHora(textoHoraFin);
         validarDatosBasicos(actividad, fecha, horaInicio, horaFin, categoriasIds);
 
         List<Reserva> todasLasReservas = reservaPersistence.readAll();
@@ -138,6 +141,24 @@ public class ReservaService {
             catch (NumberFormatException ignorado) { /* id con otro formato, se ignora */ }
         }
         return String.format("RES-%06d", max + 1);
+    }
+
+    /** Antes vivía en ReservaPanel como parsearFecha(); se movió acá para que la Vista no lance excepciones. */
+    private LocalDate parsearFecha(String texto) throws ValidacionException {
+        try {
+            return LocalDate.parse(texto == null ? "" : texto.trim());
+        } catch (DateTimeParseException ex) {
+            throw new ValidacionException("Fecha inválida. Use el formato aaaa-mm-dd.");
+        }
+    }
+
+    /** Antes vivía en ReservaPanel como parsearHora(); se movió acá por el mismo motivo. */
+    private LocalTime parsearHora(String texto) throws ValidacionException {
+        try {
+            return LocalTime.parse(texto == null ? "" : texto.trim());
+        } catch (DateTimeParseException ex) {
+            throw new ValidacionException("Hora inválida. Use el formato hh:mm.");
+        }
     }
 
     private void validarDatosBasicos(String actividad, LocalDate fecha, LocalTime horaInicio,
