@@ -4,7 +4,8 @@ import modelo.Categoria;
 import modelo.Reserva;
 import util.*;
 
-import util.ReservaService.ResultadoReserva;
+import modelo.ResultadoReserva;
+import controlador.CategoriaControlador;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -144,8 +145,7 @@ public class ReservaPanel extends JPanel {
             if (chk.isSelected()) idsMarcadosPrevios.add((String) chk.getClientProperty("categoriaId"));
         }
 
-        categorias = new CategoriaService().listar();
-
+        categorias = new CategoriaControlador().listar();
         panelCategorias.removeAll();
         checksCategorias.clear();
         for (Categoria c : categorias) {

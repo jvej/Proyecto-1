@@ -1,8 +1,7 @@
 package vista;
 
 import controlador.ActividadControlador;
-import util.ActividadService;
-import util.ActividadService.Celda;
+import modelo.Celda;
 import util.PDFReportUtil;
 
 import javax.swing.*;
@@ -72,8 +71,7 @@ public class ActividadPanel extends JPanel {
             }
             modeloTabla = new DefaultTableModel(columnas, 0);
 
-            for (int hora = ActividadService.HORA_DESDE; hora <= ActividadService.HORA_HASTA; hora++) {
-                Object[] fila = new Object[dias.size() + 1];
+            for (int hora = ActividadControlador.HORA_DESDE; hora <= ActividadControlador.HORA_HASTA; hora++) {                Object[] fila = new Object[dias.size() + 1];
                 fila[0] = String.format("%02d:00", hora);
                 for (int i = 0; i < dias.size(); i++) {
                     Celda celda = matriz.get(dias.get(i)).get(hora);
@@ -95,6 +93,7 @@ public class ActividadPanel extends JPanel {
         }
         String[] columnas = new String[modeloTabla.getColumnCount()];
         for (int i = 0; i < columnas.length; i++) columnas[i] = modeloTabla.getColumnName(i);
+
 
         List<String[]> filas = new ArrayList<>();
         for (int f = 0; f < modeloTabla.getRowCount(); f++) {

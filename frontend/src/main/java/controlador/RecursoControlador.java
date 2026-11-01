@@ -1,16 +1,19 @@
 package controlador;
 
 import modelo.Recurso;
-import modelo.ValidacionException;
-import util.RecursoService;
 
 import java.util.List;
 
 public class RecursoControlador {
-    private final RecursoService recursoService = new RecursoService();
 
-    public List<Recurso> listar() { return recursoService.listar(); }
-    public List<Recurso> buscar(String categoriaId, String descripcion) { return recursoService.buscar(categoriaId, descripcion); }
-    public void guardar(String id, String categoriaId, String descripcion) throws ValidacionException { recursoService.guardar(id, categoriaId, descripcion); }
-    public void borrar(String id) throws ValidacionException { recursoService.borrar(id); }
+    public List<Recurso> listar() {
+        try { return Remoto.service().recursoListar(); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public List<Recurso> buscar(String categoriaId, String descripcion) {
+        try { return Remoto.service().recursoBuscar(categoriaId, descripcion); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public void guardar(String id, String categoriaId, String descripcion) throws Exception {
+        Remoto.service().recursoGuardar(id, categoriaId, descripcion);
+    }
+    public void borrar(String id) throws Exception { Remoto.service().recursoBorrar(id); }
 }

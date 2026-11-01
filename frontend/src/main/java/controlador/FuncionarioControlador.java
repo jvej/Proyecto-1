@@ -1,18 +1,19 @@
 package controlador;
 
 import modelo.Funcionario;
-import modelo.ValidacionException;
-import util.FuncionarioService;
 
 import java.util.List;
 
 public class FuncionarioControlador {
-    private final FuncionarioService funcionarioService = new FuncionarioService();
 
-    public List<Funcionario> listar() { return funcionarioService.listar(); }
-    public List<Funcionario> buscar(String texto) { return funcionarioService.buscar(texto); }
-    public void crear(String id, String nombre, String telefono, String clave) throws ValidacionException { funcionarioService.crear(id, nombre, telefono, clave); }
-    public void modificar(String id, String nombre, String telefono) throws ValidacionException { funcionarioService.modificar(id, nombre, telefono); }
-    public void guardar(String id, String nombre, String telefono, String clave) throws ValidacionException { funcionarioService.guardar(id, nombre, telefono, clave); }
-    public void eliminar(String id) throws ValidacionException { funcionarioService.eliminar(id); }
+    public List<Funcionario> listar() {
+        try { return Remoto.service().funcionarioListar(); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public List<Funcionario> buscar(String texto) {
+        try { return Remoto.service().funcionarioBuscar(texto); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public void guardar(String id, String nombre, String telefono, String clave) throws Exception {
+        Remoto.service().funcionarioGuardar(id, nombre, telefono, clave);
+    }
+    public void eliminar(String id) throws Exception { Remoto.service().funcionarioEliminar(id); }
 }

@@ -1,6 +1,6 @@
 package vista;
 import controlador.RecursoControlador;
-import util.CategoriaService;
+import controlador.CategoriaControlador;
 import modelo.Categoria;
 
 import modelo.Recurso;
@@ -133,8 +133,7 @@ public class RecursoPanel extends JPanel {
         String filtroPrevio = (String) cmbFiltroCategoria.getSelectedItem();
         String categoriaPrevia = (String) cmbCategoria.getSelectedItem();
 
-        categorias = new CategoriaService().listar();
-
+        categorias = new CategoriaControlador().listar();
         cmbFiltroCategoria.removeAllItems();
         cmbFiltroCategoria.addItem(""); // "" = sin filtro, muestra todas
         cmbCategoria.removeAllItems();

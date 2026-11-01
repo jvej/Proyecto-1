@@ -1,17 +1,18 @@
 package controlador;
 
 import modelo.Usuario;
-import modelo.ValidacionException;
-import util.UsuarioService;
 
 public class LoginControlador {
-    private final UsuarioService usuarioService = new UsuarioService();
 
-    public Usuario login(String id, String clave) throws ValidacionException {
-        return usuarioService.autenticar(id, clave);
+    public Usuario login(String id, String clave) throws Exception {
+        return Remoto.service().login(id, clave);
     }
 
-    public void cambiarClave(String id, String claveActual, String claveNueva, String claveNuevaConfirmacion) throws ValidacionException {
-        usuarioService.cambiarClave(id, claveActual, claveNueva, claveNuevaConfirmacion);
+    public void logout() {
+        try { Remoto.service().logout(); } catch (Exception ignorado) { }
+    }
+
+    public void cambiarClave(String id, String claveActual, String claveNueva, String confirmacion) throws Exception {
+        Remoto.service().cambiarClave(id, claveActual, claveNueva, confirmacion);
     }
 }

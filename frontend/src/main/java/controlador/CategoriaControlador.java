@@ -1,18 +1,17 @@
 package controlador;
 
 import modelo.Categoria;
-import modelo.ValidacionException;
-import util.CategoriaService;
 
 import java.util.List;
 
 public class CategoriaControlador {
-    private final CategoriaService categoriaService = new CategoriaService();
 
-    public List<Categoria> listar() { return categoriaService.listar(); }
-    public List<Categoria> buscar(String texto) { return categoriaService.buscar(texto); }
-    public void crear(String descripcion) throws ValidacionException { categoriaService.crear(descripcion); }
-    public void modificar(String id, String descripcion) throws ValidacionException { categoriaService.modificar(id, descripcion); }
-    public void guardar(String id, String descripcion) throws ValidacionException { categoriaService.guardar(id, descripcion); }
-    public void eliminar(String id) throws ValidacionException { categoriaService.eliminar(id); }
+    public List<Categoria> listar() {
+        try { return Remoto.service().categoriaListar(); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public List<Categoria> buscar(String texto) {
+        try { return Remoto.service().categoriaBuscar(texto); } catch (Exception e) { throw Remoto.error(e); }
+    }
+    public void guardar(String id, String descripcion) throws Exception { Remoto.service().categoriaGuardar(id, descripcion); }
+    public void eliminar(String id) throws Exception { Remoto.service().categoriaEliminar(id); }
 }
