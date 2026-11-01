@@ -20,6 +20,11 @@
 
     <build>
         <plugins>
+            <!-- Activa los tests de integracion (*IT.java) en este modulo -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
             <!-- Genera target/frontend.jar ejecutable con todo adentro: java -jar frontend.jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
