@@ -36,9 +36,9 @@ public class ReservaDao {
                 + "WHERE r.estado = 'ACTIVA' AND r.fecha = ? AND r.hora_inicio < ? AND ? < r.hora_fin";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setObject(1, fecha);
-            ps.setObject(2, fin);
-            ps.setObject(3, inicio);
+            ps.setDate(1, java.sql.Date.valueOf(fecha));
+            ps.setString(2, fin.toString());     // las horas se guardan como texto 'HH:MM'
+            ps.setString(3, inicio.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 Set<String> ocupados = new HashSet<>();
                 while (rs.next()) ocupados.add(rs.getString(1));
@@ -62,9 +62,9 @@ public class ReservaDao {
                 ps.setString(1, r.getId());
                 ps.setString(2, r.getFuncionarioId());
                 ps.setString(3, r.getActividad());
-                ps.setObject(4, r.getFecha());
-                ps.setObject(5, r.getHoraInicio());
-                ps.setObject(6, r.getHoraFin());
+                ps.setDate(4, java.sql.Date.valueOf(r.getFecha()));
+                ps.setString(5, r.getHoraInicio().toString());
+                ps.setString(6, r.getHoraFin().toString());
                 ps.setString(7, r.getEstado());
                 ps.executeUpdate();
 
@@ -97,7 +97,7 @@ public class ReservaDao {
     }
 
     public int ultimoNumero() throws SQLException {
-        String sql = "SELECT COALESCE(MAX(CAST(SUBSTRING(id, 5) AS UNSIGNED)), 0) FROM reserva WHERE id LIKE 'RES-%'";
+        String sql = "SELECT NVL(MAX(TO_NUMBER(SUBSTR(id, 5))), 0) FROM reserva WHERE id LIKE 'RES-%'";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -105,7 +105,7 @@ public class ReservaDao {
         }
     }
 
-    // ---------- Estadisticas (el conteo lo hace MySQL con GROUP BY) ----------
+    // ---------- Estadisticas (el conteo lo hace Oracle con GROUP BY) ----------
 
     // Cuantas veces se pidio cada categoria en reservas activas del rango.
     public Map<String, Integer> contarPorCategoria(LocalDate desde, LocalDate hasta) throws SQLException {
@@ -117,8 +117,8 @@ public class ReservaDao {
                 + "GROUP BY c.descripcion";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setObject(1, desde);
-            ps.setObject(2, hasta);
+            ps.setDate(1, java.sql.Date.valueOf(desde));
+            ps.setDate(2, java.sql.Date.valueOf(hasta));
             try (ResultSet rs = ps.executeQuery()) {
                 Map<String, Integer> conteo = new TreeMap<>();
                 while (rs.next()) conteo.put(rs.getString("descripcion"), rs.getInt("cantidad"));
@@ -128,19 +128,19 @@ public class ReservaDao {
     }
 
     // Cuantas reservas activas hubo por semana. La semana se identifica por su lunes:
-    // WEEKDAY(fecha) da 0 para lunes, 1 martes... entonces fecha - WEEKDAY(fecha) = lunes.
+    // en Oracle TRUNC(fecha, 'IW') devuelve el lunes de la semana de esa fecha.
     public Map<LocalDate, Integer> contarPorSemana(LocalDate desde, LocalDate hasta) throws SQLException {
-        String sql = "SELECT DATE_SUB(fecha, INTERVAL WEEKDAY(fecha) DAY) AS lunes, COUNT(*) AS cantidad "
+        String sql = "SELECT TRUNC(fecha, 'IW') AS lunes, COUNT(*) AS cantidad "
                 + "FROM reserva "
                 + "WHERE estado = 'ACTIVA' AND fecha BETWEEN ? AND ? "
-                + "GROUP BY lunes";
+                + "GROUP BY TRUNC(fecha, 'IW')";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setObject(1, desde);
-            ps.setObject(2, hasta);
+            ps.setDate(1, java.sql.Date.valueOf(desde));
+            ps.setDate(2, java.sql.Date.valueOf(hasta));
             try (ResultSet rs = ps.executeQuery()) {
                 Map<LocalDate, Integer> conteo = new TreeMap<>();
-                while (rs.next()) conteo.put(rs.getObject("lunes", LocalDate.class), rs.getInt("cantidad"));
+                while (rs.next()) conteo.put(rs.getDate("lunes").toLocalDate(), rs.getInt("cantidad"));
                 return conteo;
             }
         }
@@ -151,7 +151,11 @@ public class ReservaDao {
     private List<Reserva> consultar(String sql, Object... parametros) throws SQLException {
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
-            for (int i = 0; i < parametros.length; i++) ps.setObject(i + 1, parametros[i]);
+            for (int i = 0; i < parametros.length; i++) {
+                Object p = parametros[i];
+                if (p instanceof LocalDate d) ps.setDate(i + 1, java.sql.Date.valueOf(d));
+                else ps.setObject(i + 1, p);
+            }
             List<Reserva> lista = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) lista.add(convertir(rs));
@@ -166,9 +170,9 @@ public class ReservaDao {
         r.setId(rs.getString("id"));
         r.setFuncionarioId(rs.getString("funcionario_id"));
         r.setActividad(rs.getString("actividad"));
-        r.setFecha(rs.getObject("fecha", LocalDate.class));
-        r.setHoraInicio(rs.getObject("hora_inicio", LocalTime.class));
-        r.setHoraFin(rs.getObject("hora_fin", LocalTime.class));
+        r.setFecha(rs.getDate("fecha").toLocalDate());
+        r.setHoraInicio(LocalTime.parse(rs.getString("hora_inicio")));  // texto 'HH:MM'
+        r.setHoraFin(LocalTime.parse(rs.getString("hora_fin")));
         r.setEstado(rs.getString("estado"));
         return r;
     }

@@ -74,7 +74,7 @@ public class CategoriaDao {
 
     // Mayor numero usado en los ids "CAT-000123" (0 si no hay ninguno).
     public int ultimoNumero() throws SQLException {
-        String sql = "SELECT COALESCE(MAX(CAST(SUBSTRING(id, 5) AS UNSIGNED)), 0) FROM categoria WHERE id LIKE 'CAT-%'";
+        String sql = "SELECT NVL(MAX(TO_NUMBER(SUBSTR(id, 5))), 0) FROM categoria WHERE id LIKE 'CAT-%'";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

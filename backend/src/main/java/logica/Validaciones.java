@@ -30,9 +30,13 @@ final class Validaciones {
         }
     }
 
-    // MySQL avisa con esta excepcion cuando se viola una PRIMARY KEY (duplicado)
-    // o una FOREIGN KEY (ej: borrar una categoria que tiene recursos).
+    // Oracle avisa con estos codigos cuando se viola una llave:
+    //   ORA-00001 = PRIMARY KEY / UNIQUE duplicada
+    //   ORA-02291 = FOREIGN KEY: el padre no existe
+    //   ORA-02292 = FOREIGN KEY: no se puede borrar porque tiene hijos (ej: categoria con recursos)
     static boolean esViolacionDeLlave(SQLException e) {
-        return e instanceof SQLIntegrityConstraintViolationException;
+        int codigo = e.getErrorCode();
+        return e instanceof SQLIntegrityConstraintViolationException
+                || codigo == 1 || codigo == 2291 || codigo == 2292;
     }
 }

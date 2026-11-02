@@ -86,7 +86,7 @@ public class FuncionarioDao {
     }
 
     // Borra el USUARIO; la fila de "funcionario" se borra sola por el ON DELETE CASCADE.
-    // Si el funcionario tiene reservas, MySQL lo impide (FOREIGN KEY) y lanza excepcion.
+    // Si el funcionario tiene reservas, Oracle lo impide (FOREIGN KEY) y lanza excepcion.
     public int eliminar(String id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE id = ? AND rol = 'FUNCIONARIO'";
         try (Connection cn = Database.getConnection();
@@ -98,7 +98,8 @@ public class FuncionarioDao {
 
     private Funcionario convertir(ResultSet rs) throws SQLException {
         // La clave NO se manda al Frontend: se deja vacia.
+        // (En Oracle un texto vacio '' se guarda como NULL, por eso el telefono puede venir null.)
         return new Funcionario(rs.getString("id"), "", Rol.FUNCIONARIO,
-                rs.getString("nombre"), rs.getString("telefono"));
+                rs.getString("nombre"), rs.getString("telefono") == null ? "" : rs.getString("telefono"));
     }
 }

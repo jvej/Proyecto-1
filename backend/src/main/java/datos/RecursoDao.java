@@ -57,9 +57,12 @@ public class RecursoDao {
     }
 
     // Si el id no existe lo inserta; si ya existe, lo actualiza ("upsert").
+    // En Oracle esto se hace con MERGE.
     public void guardar(Recurso r) throws SQLException {
-        String sql = "INSERT INTO recurso (id, categoria_id, descripcion) VALUES (?, ?, ?) "
-                + "ON DUPLICATE KEY UPDATE categoria_id = VALUES(categoria_id), descripcion = VALUES(descripcion)";
+        String sql = "MERGE INTO recurso t USING (SELECT ? AS id, ? AS categoria_id, ? AS descripcion FROM dual) s "
+                + "ON (t.id = s.id) "
+                + "WHEN MATCHED THEN UPDATE SET t.categoria_id = s.categoria_id, t.descripcion = s.descripcion "
+                + "WHEN NOT MATCHED THEN INSERT (id, categoria_id, descripcion) VALUES (s.id, s.categoria_id, s.descripcion)";
         try (Connection cn = Database.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, r.getId());
